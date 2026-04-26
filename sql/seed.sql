@@ -30,9 +30,9 @@ ALTER TABLE booking AUTO_INCREMENT = 1;
 
 INSERT INTO admin (name) VALUES
 ('Archana Bhattarai Sharma'),
-('Anisha Gurung')
-('Preeti Kumari Dhwmala')
-('Aasutosh Malla')
+('Anisha Gurung'),
+('Preeti Kumari Dhwmala'),
+('Aasutosh Malla'),
 ('Unika Aadikari');
 
 INSERT INTO staff (name, role, phone_number) VALUES
