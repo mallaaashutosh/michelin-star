@@ -1,8 +1,8 @@
-package com.michelinstar.util;
-
+package com.restaurant.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+
 
 public class PasswordHasher {
     public static String hashPassword(String password) {
@@ -18,4 +18,5 @@ public class PasswordHasher {
     public static boolean checkPassword(String password, String hashed) {
         return hashPassword(password).equals(hashed);
     }
+
 }

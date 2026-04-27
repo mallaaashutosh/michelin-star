@@ -1,5 +1,4 @@
-//we have this in our lecture 5 about data encryption and hasing
-package com.michelin-star.utils;
+package com.restaurant.utils;
 
 import org.mindrot.jbcrypt.BCrypt;
 
