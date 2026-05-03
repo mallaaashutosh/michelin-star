@@ -37,9 +37,9 @@ INSERT INTO staff (name, role, phone_number, email, password, status) VALUES
 INSERT INTO customer (name, phone_number, email, password, status) VALUES
 ('Hari KC','9845987657', 'hari@gmail.com', 'hari123', 'pending'),
 ('Nirajan aadhikari','9845643889', 'nirajan@gmail.com', 'niraijan123', 'pending'),
-('Jwola Shrestha','9834876543', 'jwola@gmail.com', 'jwola@gmail.com', 'jwola123', 'pending'),
-('Anita Poudel','9836091876', 'anita@gmail.com', 'anita@gmail.com', 'anita123', 'pending'),
-('Suikriti Aryal','9836091876','Suikriti@gmail.com', 'suikriti@gmail.com', 'suikriti123', 'pending');
+('Jwola Shrestha','9834876543', 'jwola@gmail.com', 'jwola123', 'pending'),
+('Anita Poudel','9836091876', 'anita@gmail.com', 'anita123', 'pending'),
+('Suikriti Aryal','9836591876','Suikriti@gmail.com', 'suikriti123', 'pending');
 
 INSERT INTO menu (name, category, price, availability) VALUES
 ('SteamMomo', 'Japanese', 180.00, 'available'),
