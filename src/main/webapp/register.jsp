@@ -57,7 +57,7 @@
     </form>
 
     <div class="footer">
-        Already have an account? <a href="login.jsp">Login here</a>
+        Already have an account? <a href="${pageContext.request.contextPath}/login">Login here</a>
     </div>
 </div>
 </body>

@@ -16,6 +16,10 @@ import java.sql.SQLException;
 public class LoginServlet extends HttpServlet {
     private UserDAO userDAO = new UserDAO();
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("userPortal/login.jsp").forward(request, response);
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");

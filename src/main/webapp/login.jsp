@@ -61,7 +61,7 @@
     </form>
 
     <div class="footer">
-        Don't have an account? <a href="register.jsp">Register here</a>
+        Don't have an account? <a href="${pageContext.request.contextPath}/register">Register here</a>
     </div>
 </div>
 </body>

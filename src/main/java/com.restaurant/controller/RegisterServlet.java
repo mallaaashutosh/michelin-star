@@ -25,6 +25,10 @@ public class RegisterServlet extends HttpServlet {
     private final UserDAO userDAO = new UserDAO();
     private static final String UPLOAD_DIR = "uploads";
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("userPortal/register.jsp").forward(request, response);
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
@@ -71,10 +75,10 @@ public class RegisterServlet extends HttpServlet {
             User user = new User(name, phone, email, hashedPassword);
             user.setProfileImage(fileName);
 
-            if (userDAO.registerUser(user)) {
-                request.setAttribute("success", "Registration successful! Please login.");
-                response.sendRedirect("login.jsp");
-            } else {
+             if (userDAO.registerUser(user)) {
+                 request.setAttribute("success", "Registration successful! Please login.");
+                 response.sendRedirect(request.getContextPath() + "/login");
+             } else {
                 request.setAttribute("error", "Registration failed. Try again.");
                 request.getRequestDispatcher("userPortal/register.jsp").forward(request, response);
             }
