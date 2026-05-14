@@ -1,6 +1,7 @@
 package com.restaurant.controller;
 
 import com.restaurant.dao.UserDAO;
+import com.restaurant.dao.UserDaoImpl;
 import com.restaurant.entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private UserDAO userDAO = new UserDAO();
+    private UserDAO userDAO = new UserDaoImpl();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("userPortal/login.jsp").forward(request, response);

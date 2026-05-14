@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Michelin-Star Restaurant</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
 
