@@ -1,7 +1,6 @@
 CREATE DATABASE IF NOT EXISTS restaurant;
 USE restaurant;
 
-
 DROP TABLE IF EXISTS payment;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS cart;
@@ -36,11 +35,13 @@ CREATE TABLE menu (
 -- CART TABLE (cleared after payment)
 CREATE TABLE cart (
                       cart_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                      customer_id INT NOT NULL,
+                      user_id INT NOT NULL,
                       menu_id INT NOT NULL,
                       quantity INT NOT NULL DEFAULT 1,
+                      table_number INT NOT NULL,
                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                      FOREIGN KEY (customer_id) REFERENCES user(user_id),
+                      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                      FOREIGN KEY (user_id) REFERENCES user(user_id),
                       FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 );
 
@@ -50,7 +51,7 @@ CREATE TABLE orders (
                         order_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         customer_id INT NOT NULL,
                         menu_id INT NOT NULL,
-                        menu_name VARCHAR(255) NOT NULL,
+                        order_name VARCHAR(255) NOT NULL,
                         quantity INT NOT NULL DEFAULT 1,
                         price DECIMAL(10,2) NOT NULL,
                         total_amount DECIMAL(10,2) NOT NULL,
@@ -62,8 +63,6 @@ CREATE TABLE orders (
                         FOREIGN KEY (customer_id) REFERENCES user(user_id),
                         FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 );
-
-
 -- PAYMENT TABLE (one row per complete payment)
 CREATE TABLE payment (
                          payment_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -73,5 +72,5 @@ CREATE TABLE payment (
                          status VARCHAR(20) DEFAULT 'paid',
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                         FOREIGN KEY (customer_id) REFERENCES user(user_id)
+                         FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
