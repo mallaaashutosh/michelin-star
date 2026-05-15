@@ -4,13 +4,5 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
-    <servlet>
-        <servlet-name>ImageServlet</servlet-name>
-        <servlet-class>com.restaurant.controller.ImageServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ImageServlet</servlet-name>
-        <url-pattern>/uploads/*</url-pattern>
-    </servlet-mapping>
 </web-app>
 
