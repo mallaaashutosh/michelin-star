@@ -63,7 +63,7 @@ user_id INT NOT NULL,
 menu_id INT NOT NULL,
 quantity INT NOT NULL DEFAULT 1,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (user_id) REFERENCES customer(user_id),
+FOREIGN KEY (user_id) REFERENCES user(user_id),
 FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 );
 
@@ -82,7 +82,7 @@ payment_method VARCHAR(50) DEFAULT 'cash',
 status VARCHAR(20) DEFAULT 'pending',
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-FOREIGN KEY (user_id) REFERENCES customer(user_id),
+FOREIGN KEY (user_id) REFERENCES user(user_id),
 FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 );
 
@@ -96,5 +96,5 @@ method VARCHAR(50) DEFAULT 'cash',
 status VARCHAR(20) DEFAULT 'paid',
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-FOREIGN KEY (user_id) REFERENCES customer(user_id)
+FOREIGN KEY (user_id) REFERENCES user(user_id)
 );

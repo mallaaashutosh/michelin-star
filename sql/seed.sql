@@ -56,7 +56,7 @@ INSERT INTO menu (name, category, price, image, availability) VALUES
 ('Fresh Lime Soda', 'Beverages', 80.00, 'lime-soda.jpg', 'available');
 
 
-INSERT INTO orders (customer_id, menu_id, menu_name, quantity, price, total_amount, table_number, payment_method, status) VALUES
+INSERT INTO orders (user_id, menu_id, menu_name, quantity, price, total_amount, table_number, payment_method, status) VALUES
 (1, 1, 'Steam Momo',      2, 180.00, 360.00, 3, 'cash', 'pending'),
 (1, 9, 'Masala Tea',      2,  60.00, 120.00, 3, 'cash', 'pending'),   -- FIX: total_amount 360.00 → 120.00 (2 × 60.00)
 (2, 4, 'Chicken Chowmein',1, 220.00, 220.00, 1, 'card', 'completed'),
@@ -64,7 +64,19 @@ INSERT INTO orders (customer_id, menu_id, menu_name, quantity, price, total_amou
 (3, 10,'Fresh Lime Soda', 1,  80.00,  80.00, 5, 'cash', 'completed'); -- FIX: total_amount 250.00 → 80.00 (1 × 80.00)
 
 
-INSERT INTO payment (customer_id, total_amount, method, status) VALUES
+INSERT INTO payment (user_id, total_amount, method, status) VALUES
 (1, 480.00, 'cash', 'paid'),
 (2, 220.00, 'card', 'paid'),
 (3, 330.00, 'cash', 'paid');
+
+INSERT INTO cart (user_id, menu_id, quantity) VALUES
+(2, 1, 2),
+(2, 4, 1),
+(2, 9, 2),
+(3, 2, 1),
+(3, 6, 1),
+(3, 10, 1),
+(4, 1, 3),
+(4, 8, 1),
+(5, 3, 1),
+(5, 7, 1);
