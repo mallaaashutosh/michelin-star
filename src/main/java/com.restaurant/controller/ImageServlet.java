@@ -32,7 +32,7 @@ public class ImageServlet extends HttpServlet {
 
         // Get the path to images folder inside the project
         // This works on any computer because it uses the project location
-        String uploadPath = getServletContext().getRealPath("/images");
+        String uploadPath = getServletContext().getRealPath("/image");
         File file = new File(uploadPath, filename);
 
         // Check if file exists
