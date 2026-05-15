@@ -59,7 +59,7 @@ updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 -- CART TABLE (cleared after payment)
 CREATE TABLE cart (
 cart_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
---customer_id INT NOT NULL,
+user_id INT NOT NULL,
 menu_id INT NOT NULL,
 quantity INT NOT NULL DEFAULT 1,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -90,7 +90,7 @@ FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 -- PAYMENT TABLE (one row per complete payment)
 CREATE TABLE payment (
 payment_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-customer_id INT NOT NULL,
+user_id INT NOT NULL,
 total_amount DECIMAL(10,2) NOT NULL,
 method VARCHAR(50) DEFAULT 'cash',
 status VARCHAR(20) DEFAULT 'paid',
