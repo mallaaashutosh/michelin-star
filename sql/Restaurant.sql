@@ -1,7 +1,6 @@
 CREATE DATABASE IF NOT EXISTS restaurant;
 USE restaurant;
 
-
 DROP TABLE IF EXISTS payment;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS cart;

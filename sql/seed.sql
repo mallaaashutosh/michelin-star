@@ -4,8 +4,6 @@ DELETE FROM payment;
 DELETE FROM orders;
 DELETE FROM cart;
 DELETE FROM menu;
---DELETE FROM customer;
---DELETE FROM admin;
 DELETE FROM user;
 
 ALTER TABLE payment AUTO_INCREMENT = 1;
