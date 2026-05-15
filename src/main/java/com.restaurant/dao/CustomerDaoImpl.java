@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDaoImpl implements UserDAO {
+public class CustomerDaoImpl implements CustomerDAO {
 
     @Override
     public boolean registerUser(User user) throws SQLException {

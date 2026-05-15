@@ -1,84 +1,58 @@
 USE restaurant;
 
-DELETE FROM admin;
-DELETE FROM staff;
-DELETE FROM customer;
-DELETE FROM menu;
-DELETE FROM receipt;
-DELETE FROM tables;
 DELETE FROM payment;
 DELETE FROM orders;
-DELETE FROM booking;
+DELETE FROM cart;
+DELETE FROM menu;
+DELETE FROM customer;
+DELETE FROM admin;
 
-ALTER TABLE admin AUTO_INCREMENT = 1;
-ALTER TABLE staff AUTO_INCREMENT = 1;
-ALTER TABLE customer AUTO_INCREMENT = 1;
-ALTER TABLE menu AUTO_INCREMENT = 1;
-ALTER TABLE receipt AUTO_INCREMENT = 1;
-ALTER TABLE tables AUTO_INCREMENT = 1;
 ALTER TABLE payment AUTO_INCREMENT = 1;
 ALTER TABLE orders AUTO_INCREMENT = 1;
-ALTER TABLE booking AUTO_INCREMENT = 1;
+ALTER TABLE cart AUTO_INCREMENT = 1;
+ALTER TABLE menu AUTO_INCREMENT = 1;
+ALTER TABLE customer AUTO_INCREMENT = 1;
+ALTER TABLE admin AUTO_INCREMENT = 1;
+
 
 INSERT INTO admin (name, email, password) VALUES
 ('Archana Bhattarai Sharma', 'archanabhattarai@gmail.com', 'archana123'),
 ('Anisha Gurung', 'anishagurung@gmail.com', 'anisha123'),
-('Preeti Kumari Dhwmala', 'preetikumaridhamala@gmail.com', 'preeti123'),
-('Aasutosh Malla', 'aasutoshMalla@gmail.com', 'aasutosh123'),
-('Unika Aadikari', 'unikaadhikari@gmail.com', 'unika123');
+('Preeti Kumari Dhamala', 'preetikumaridhamala@gmail.com', 'preeti123'),
+('Aasutosh Malla', 'aasutoshmalla@gmail.com', 'aasutosh123'),
+('Unika Adhikari', 'unikaadhikari@gmail.com', 'unika123');
 
-INSERT INTO staff (name, role, phone_number, email, password, status) VALUES
-('Bibisha','Manager','9845643889', 'bibisha@gmail.com', 'bibisha123', 'active'),
-('Pooja', 'Waiter','9845987657', 'pooja@gmail.com', 'pooja123', 'active'),
-('Kristina','Waiter','9834876543', 'kristina@gmail.com', 'kristina123', 'active'),
-('Rakshya','Cook','9853487264', 'rakshya@gmail.com', 'rakshya123', 'active'),
-('Sristy','Waiter','9836091876', 'sristy@gmail.com', 'sristy123', 'active');
 
 INSERT INTO customer (name, phone_number, email, password, status) VALUES
-('Hari KC','9845987657', 'hari@gmail.com', 'hari123', 'pending'),
-('Nirajan aadhikari','9845643889', 'nirajan@gmail.com', 'niraijan123', 'pending'),
-('Jwola Shrestha','9834876543', 'jwola@gmail.com', 'jwola123', 'pending'),
-('Anita Poudel','9836091876', 'anita@gmail.com', 'anita123', 'pending'),
-('Suikriti Aryal','9836591876','Suikriti@gmail.com', 'suikriti123', 'pending');
+('Hari KC', '9845987657', 'hari@gmail.com', 'hari123', 'approved'),
+('Nirajan Adhikari', '9845643889', 'nirajan@gmail.com', 'nirajan123', 'approved'),
+('Jwala Shrestha', '9834876543', 'jwala@gmail.com', 'jwala123', 'approved'),
+('Anita Poudel', '9836091876', 'anita@gmail.com', 'anita123', 'pending'),
+('Suikriti Aryal', '9836591876', 'suikriti@gmail.com', 'suikriti123', 'pending');
 
-INSERT INTO menu (name, category, price, availability) VALUES
-('SteamMomo', 'Japanese', 180.00, 'available'),
-('FriedMomo - Fried', 'Indian', 200.00, 'available'),
-('Dal Bhat Tarkari', 'Nepali',250.00, 'available'),
-('Chicken Chowmein', 'Italian',220.00, 'available'),
-('Veg Fried Rice', 'Turkish', 190.00, 'available');
 
-INSERT INTO orders (customer_id, menu_id, dates, quantity, status) VALUES
-(1, 1,  '2026-04-10', 1, 'pending'),
-(2, 5,  '2026-04-10', 1, 'pending'),
-(3, 3,  '2026-04-11', 1, 'pending'),
-(4, 3,  '2026-04-11', 1, 'pending'),
-(5, 2,  '2026-04-12', 1, 'pending');
+INSERT INTO menu (name, category, price, image, availability) VALUES
+('Steam Momo', 'Nepali', 180.00, 'steam-momo.jpg', 'available'),
+('Fried Momo', 'Nepali', 200.00, 'fried-momo.jpg', 'available'),
+('Dal Bhat Tarkari', 'Nepali', 250.00, 'dal-bhat.jpg', 'available'),
+('Chicken Chowmein', 'Chinese', 220.00, 'chowmein.jpg', 'available'),
+('Veg Fried Rice', 'Chinese', 190.00, 'fried-rice.jpg', 'available'),
+('Butter Chicken', 'Indian', 320.00, 'butter-chicken.jpg', 'available'),
+('Chicken Burger', 'FastFood', 250.00, 'chicken-burger.jpg', 'available'),
+('Margherita Pizza', 'Italian', 450.00, 'pizza.jpg', 'available'),
+('Masala Tea', 'Beverages', 60.00, 'masala-tea.jpg', 'available'),
+('Fresh Lime Soda', 'Beverages', 80.00, 'lime-soda.jpg', 'available');
 
-INSERT INTO receipt (order_id, total_amount) VALUES
-(1,  180.00),
-(2,  190.00),
-(3,  250.00),
-(4,  450.00),
-(5,  280.00);
 
-INSERT INTO tables (capacity, location, table_number, status) VALUES
-(2,  'Roof', 6, 'available'),
-(4,  'Outdoor', 3, 'available'),
-(4,  'Roof', 1, 'available'),
-(6,  'Indoor', 4, 'available'),
-(2,  'Outdoor', 2, 'available');
+INSERT INTO orders (customer_id, menu_id, menu_name, quantity, price, total_amount, table_number, payment_method, status) VALUES
+(1, 1, 'Steam Momo',      2, 180.00, 360.00, 3, 'cash', 'pending'),
+(1, 9, 'Masala Tea',      2,  60.00, 120.00, 3, 'cash', 'pending'),   -- FIX: total_amount 360.00 → 120.00 (2 × 60.00)
+(2, 4, 'Chicken Chowmein',1, 220.00, 220.00, 1, 'card', 'completed'),
+(3, 3, 'Dal Bhat Tarkari',1, 250.00, 250.00, 5, 'cash', 'completed'),
+(3, 10,'Fresh Lime Soda', 1,  80.00,  80.00, 5, 'cash', 'completed'); -- FIX: total_amount 250.00 → 80.00 (1 × 80.00)
 
-INSERT INTO payment (order_id, amount, dates, method, status) VALUES
-(1,  180.00, '2026-04-10', 'cash', 'unpaid'),
-(2,  190.00, '2026-04-10', 'cash', 'unpaid'),
-(3,  250.00, '2026-04-11', 'cash', 'unpaid'),
-(4,  450.00, '2026-04-11', 'cash', 'unpaid'),
-(5,  280.00, '2026-04-12', 'cash', 'unpaid');
 
-INSERT INTO booking (customer_id, table_id, dates, times, status) VALUES
-(1, 1, '2026-04-15', '12:30', 'pending'),
-(2, 2, '2026-04-16', '7:00', 'pending'),
-(3, 3, '2026-04-17', '12:00', 'pending'),
-(4, 4, '2026-04-18', '1:50', 'pending'),
-(5, 5, '2026-04-19', '5:30', 'pending');
+INSERT INTO payment (customer_id, total_amount, method, status) VALUES
+(1, 480.00, 'cash', 'paid'),
+(2, 220.00, 'card', 'paid'),
+(3, 330.00, 'cash', 'paid');

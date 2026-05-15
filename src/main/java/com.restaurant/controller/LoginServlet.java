@@ -1,7 +1,7 @@
 package com.restaurant.controller;
 
-import com.restaurant.dao.UserDAO;
-import com.restaurant.dao.UserDaoImpl;
+import com.restaurant.dao.CustomerDAO;
+import com.restaurant.dao.CustomerDaoImpl;
 import com.restaurant.entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private UserDAO userDAO = new UserDaoImpl();
+    private CustomerDAO customerDAO = new CustomerDaoImpl();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("userPortal/login.jsp").forward(request, response);
@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         try {
-            User user = userDAO.loginUser(email, password);
+            User user = customerDAO.loginUser(email, password);
 
             if (user != null) {
                 // Session management

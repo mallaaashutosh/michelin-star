@@ -1,4 +1,5 @@
 package com.restaurant.controller;
 
-public class OrderServlet {
+public class PaymentServlet
+{
 }

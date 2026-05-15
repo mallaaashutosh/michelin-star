@@ -3,7 +3,7 @@ package com.restaurant.dao;
 import com.restaurant.entity.User;
 import java.sql.SQLException;
 
-public interface UserDAO {
+public interface CustomerDAO {
 
     boolean registerUser(User user) throws SQLException;
 

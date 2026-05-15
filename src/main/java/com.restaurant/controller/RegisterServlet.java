@@ -1,7 +1,7 @@
 package com.restaurant.controller;
 
-import com.restaurant.dao.UserDAO;
-import com.restaurant.dao.UserDaoImpl;
+import com.restaurant.dao.CustomerDAO;
+import com.restaurant.dao.CustomerDaoImpl;
 import com.restaurant.entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -23,7 +23,7 @@ import java.sql.SQLException;
         maxRequestSize = 1024 * 1024 * 50
 )
 public class RegisterServlet extends HttpServlet {
-    private final UserDAO userDAO = new UserDaoImpl();
+    private final CustomerDAO customerDAO = new CustomerDaoImpl();
     private static final String UPLOAD_DIR = "uploads";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -51,7 +51,7 @@ public class RegisterServlet extends HttpServlet {
         }
 
         try {
-            if (userDAO.isEmailExists(email)) {
+            if (customerDAO.isEmailExists(email)) {
                 request.setAttribute("error", "Email already registered.");
                 request.getRequestDispatcher("userPortal/register.jsp").forward(request, response);
                 return;
@@ -76,7 +76,7 @@ public class RegisterServlet extends HttpServlet {
             User user = new User(name, phone, email, hashedPassword);
             user.setProfileImage(fileName);
 
-             if (userDAO.registerUser(user)) {
+             if (customerDAO.registerUser(user)) {
                  request.setAttribute("success", "Registration successful! Please login.");
                  response.sendRedirect(request.getContextPath() + "/login");
              } else {
