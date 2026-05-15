@@ -4,31 +4,45 @@ DELETE FROM payment;
 DELETE FROM orders;
 DELETE FROM cart;
 DELETE FROM menu;
-DELETE FROM customer;
-DELETE FROM admin;
+--DELETE FROM customer;
+--DELETE FROM admin;
+DELETE FROM user;
 
 ALTER TABLE payment AUTO_INCREMENT = 1;
 ALTER TABLE orders AUTO_INCREMENT = 1;
 ALTER TABLE cart AUTO_INCREMENT = 1;
 ALTER TABLE menu AUTO_INCREMENT = 1;
-ALTER TABLE customer AUTO_INCREMENT = 1;
-ALTER TABLE admin AUTO_INCREMENT = 1;
+--ALTER TABLE customer AUTO_INCREMENT = 1;
+--ALTER TABLE admin AUTO_INCREMENT = 1;
+ALTER TABLE user AUTO_INCREMENT = 1;
 
+INSERT INTO user (name, email, phone_number, password, role, status) VALUES
+('Archana Bhattarai Sharma', 'archana@michelinstar.com', '9801000001', 'archana123', 'admin', 'active'),
+('Anisha Gurung', 'anisha@michelinstar.com', '9801000002', 'anisha123', 'admin', 'active'),
+('Preeti Kumari Dhamala', 'preeti@michelinstar.com', '9801000003', 'preeti123', 'admin', 'active'),
+('Aashutosh Malla', 'aashutosh@michelinstar.com', '9801000004', 'aashutosh123', 'admin', 'active'),
+('Unika Adhikari', 'unika@michelinstar.com', '9801000005', 'unika123', 'admin', 'active'),
+('Hari KC', 'hari@gmail.com', '9845987657', 'hari123', 'customer', 'active'),
+('Nirajan Adhikari', 'nirajan@gmail.com', '9845643889', 'nirajan123', 'customer', 'active'),
+('Jwala Shrestha', 'jwala@gmail.com', '9834876543', 'jwala123', 'customer', 'active'),
+('Anita Poudel', 'anita@gmail.com', '9836091876', 'anita123', 'customer', 'pending'),
+('Suikriti Aryal', 'suikriti@gmail.com', '9836591876', 'suikriti123', 'customer', 'pending');
 
-INSERT INTO admin (name, email, password) VALUES
-('Archana Bhattarai Sharma', 'archanabhattarai@gmail.com', 'archana123'),
-('Anisha Gurung', 'anishagurung@gmail.com', 'anisha123'),
-('Preeti Kumari Dhamala', 'preetikumaridhamala@gmail.com', 'preeti123'),
-('Aasutosh Malla', 'aasutoshmalla@gmail.com', 'aasutosh123'),
-('Unika Adhikari', 'unikaadhikari@gmail.com', 'unika123');
+--INSERT INTO admin (name, email, password) VALUES
+--('Archana Bhattarai Sharma', 'archanabhattarai@gmail.com', 'archana123'),
+--('Anisha Gurung', 'anishagurung@gmail.com', 'anisha123'),
+--('Preeti Kumari Dhamala', 'preetikumaridhamala@gmail.com', 'preeti123'),
+--('Aasutosh Malla', 'aasutoshmalla@gmail.com', 'aasutosh123'),
+--('Unika Adhikari', 'unikaadhikari@gmail.com', 'unika123');
+--
+--
+--INSERT INTO customer (name, phone_number, email, password, status) VALUES
+--('Hari KC', '9845987657', 'hari@gmail.com', 'hari123', 'approved'),
+--('Nirajan Adhikari', '9845643889', 'nirajan@gmail.com', 'nirajan123', 'approved'),
+--('Jwala Shrestha', '9834876543', 'jwala@gmail.com', 'jwala123', 'approved'),
+--('Anita Poudel', '9836091876', 'anita@gmail.com', 'anita123', 'pending'),
+--('Suikriti Aryal', '9836591876', 'suikriti@gmail.com', 'suikriti123', 'pending');
 
-
-INSERT INTO customer (name, phone_number, email, password, status) VALUES
-('Hari KC', '9845987657', 'hari@gmail.com', 'hari123', 'approved'),
-('Nirajan Adhikari', '9845643889', 'nirajan@gmail.com', 'nirajan123', 'approved'),
-('Jwala Shrestha', '9834876543', 'jwala@gmail.com', 'jwala123', 'approved'),
-('Anita Poudel', '9836091876', 'anita@gmail.com', 'anita123', 'pending'),
-('Suikriti Aryal', '9836591876', 'suikriti@gmail.com', 'suikriti123', 'pending');
 
 
 INSERT INTO menu (name, category, price, image, availability) VALUES
