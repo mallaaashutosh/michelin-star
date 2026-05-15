@@ -1,37 +1,38 @@
 package com.restaurant.entity;
 
-// This class represents one row in the menu table
-// Like a blueprint for a single food item
+// This class holds data for one food item from the menu table
 public class MenuItem {
 
-    // These are the columns from my menu table in database
-    private int menuId;        // Primary key - unique ID for each food item
-    private String name;       // Name of the food (like "Steam Momo")
-    private String category;   // Category (Japanese, Nepali, Italian etc)
-    private double price;      // Price of the food item
-    private String availability; // Is it available? ("available" or maybe "unavailable")
+    // These match the columns in my menu table
+    private int menuId;
+    private String name;
+    private String category;
+    private double price;
+    private String image;
+    private String availability;
 
-    // CONSTRUCTOR 1: Used when adding a NEW food item to the database
-    // I don't know the menuId yet because database will generate it automatically
-    public MenuItem(String name, String category, double price, String availability) {
+    // Used when adding a new food item to database
+    // menuId will be created by database automatically
+    public MenuItem(String name, String category, double price, String image, String availability) {
         this.name = name;
         this.category = category;
         this.price = price;
+        this.image = image;
         this.availability = availability;
     }
 
-    // CONSTRUCTOR 2: Used when getting data FROM the database
-    // Here I DO have the menuId because it already exists in database
-    public MenuItem(int menuId, String name, String category, double price, String availability) {
+    // Used when getting food items from database
+    // menuId comes from the database
+    public MenuItem(int menuId, String name, String category, double price, String image, String availability) {
         this.menuId = menuId;
         this.name = name;
         this.category = category;
         this.price = price;
+        this.image = image;
         this.availability = availability;
     }
 
-    // GETTER methods - to read the data
-    // JSP pages need these to display the data
+    // Getter methods
     public int getMenuId() {
         return menuId;
     }
@@ -48,11 +49,15 @@ public class MenuItem {
         return price;
     }
 
+    public String getImage() {
+        return image;
+    }
+
     public String getAvailability() {
         return availability;
     }
 
-    // SETTER methods - to update the data
+    // Setter methods
     public void setMenuId(int menuId) {
         this.menuId = menuId;
     }
@@ -67,6 +72,10 @@ public class MenuItem {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setAvailability(String availability) {

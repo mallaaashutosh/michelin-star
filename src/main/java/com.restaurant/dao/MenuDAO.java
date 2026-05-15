@@ -3,26 +3,28 @@ package com.restaurant.dao;
 import com.restaurant.entity.MenuItem;
 import java.util.ArrayList;
 
+// This interface lists all the operations I can do with menu items
+// The actual code will be written in MenuDaoImpl.java
 public interface MenuDAO {
 
-    // add new menu item to database
+    // Add a new food item to database
     boolean insertMenuItem(MenuItem menuItem);
 
-    // get all menu items
+    // Get all food items from database
     ArrayList<MenuItem> fetchAllMenuItems();
 
-    // find one menu item by its id
+    // Find one food item by its ID
     MenuItem findMenuItemById(int menuId);
 
-    // update menu item
+    // Update an existing food item
     boolean updateMenuItem(MenuItem menuItem);
 
-    // delete menu item
+    // Delete a food item from database
     boolean deleteMenuItem(int menuId);
 
-    // get menu items by category (like Japanese, Nepali)
+    // Get only food items from one category (like Nepali or Chinese)
     ArrayList<MenuItem> fetchMenuItemsByCategory(String category);
 
-    // search menu items by name
+    // Search for food items by name (like searching for "momo")
     ArrayList<MenuItem> searchMenuItemsByName(String keyword);
 }

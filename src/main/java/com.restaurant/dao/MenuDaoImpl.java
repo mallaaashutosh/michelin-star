@@ -10,10 +10,12 @@ import java.util.ArrayList;
 
 public class MenuDaoImpl implements MenuDAO {
 
-    // add new menu item to database
+    // ============================================================
+    // ADD NEW FOOD ITEM TO DATABASE
+    // ============================================================
     @Override
     public boolean insertMenuItem(MenuItem menuItem) {
-        String query = "INSERT INTO menu (name, category, price, availability) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO menu (name, category, price, image, availability) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -21,7 +23,8 @@ public class MenuDaoImpl implements MenuDAO {
             ps.setString(1, menuItem.getName());
             ps.setString(2, menuItem.getCategory());
             ps.setDouble(3, menuItem.getPrice());
-            ps.setString(4, menuItem.getAvailability());
+            ps.setString(4, menuItem.getImage());
+            ps.setString(5, menuItem.getAvailability());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -30,7 +33,9 @@ public class MenuDaoImpl implements MenuDAO {
         }
     }
 
-    // get all menu items
+    // ============================================================
+    // GET ALL FOOD ITEMS FROM DATABASE
+    // ============================================================
     @Override
     public ArrayList<MenuItem> fetchAllMenuItems() {
         ArrayList<MenuItem> menuItems = new ArrayList<>();
@@ -46,6 +51,7 @@ public class MenuDaoImpl implements MenuDAO {
                         rs.getString("name"),
                         rs.getString("category"),
                         rs.getDouble("price"),
+                        rs.getString("image"),
                         rs.getString("availability")
                 );
                 menuItems.add(item);
@@ -56,7 +62,9 @@ public class MenuDaoImpl implements MenuDAO {
         return menuItems;
     }
 
-    // find one menu item by its id
+    // ============================================================
+    // FIND ONE FOOD ITEM BY ITS ID
+    // ============================================================
     @Override
     public MenuItem findMenuItemById(int menuId) {
         String query = "SELECT * FROM menu WHERE menu_id = ?";
@@ -73,6 +81,7 @@ public class MenuDaoImpl implements MenuDAO {
                             rs.getString("name"),
                             rs.getString("category"),
                             rs.getDouble("price"),
+                            rs.getString("image"),
                             rs.getString("availability")
                     );
                 }
@@ -83,10 +92,12 @@ public class MenuDaoImpl implements MenuDAO {
         return null;
     }
 
-    // update menu item
+    // ============================================================
+    // UPDATE EXISTING FOOD ITEM
+    // ============================================================
     @Override
     public boolean updateMenuItem(MenuItem menuItem) {
-        String query = "UPDATE menu SET name = ?, category = ?, price = ?, availability = ? WHERE menu_id = ?";
+        String query = "UPDATE menu SET name = ?, category = ?, price = ?, image = ?, availability = ? WHERE menu_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -94,8 +105,9 @@ public class MenuDaoImpl implements MenuDAO {
             ps.setString(1, menuItem.getName());
             ps.setString(2, menuItem.getCategory());
             ps.setDouble(3, menuItem.getPrice());
-            ps.setString(4, menuItem.getAvailability());
-            ps.setInt(5, menuItem.getMenuId());
+            ps.setString(4, menuItem.getImage());
+            ps.setString(5, menuItem.getAvailability());
+            ps.setInt(6, menuItem.getMenuId());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -104,7 +116,9 @@ public class MenuDaoImpl implements MenuDAO {
         }
     }
 
-    // delete menu item
+    // ============================================================
+    // DELETE FOOD ITEM FROM DATABASE
+    // ============================================================
     @Override
     public boolean deleteMenuItem(int menuId) {
         String query = "DELETE FROM menu WHERE menu_id = ?";
@@ -120,7 +134,9 @@ public class MenuDaoImpl implements MenuDAO {
         }
     }
 
-    // get menu items by category (like Japanese, Nepali)
+    // ============================================================
+    // GET FOOD ITEMS BY CATEGORY (like Nepali, Chinese, Indian)
+    // ============================================================
     @Override
     public ArrayList<MenuItem> fetchMenuItemsByCategory(String category) {
         ArrayList<MenuItem> menuItems = new ArrayList<>();
@@ -138,6 +154,7 @@ public class MenuDaoImpl implements MenuDAO {
                             rs.getString("name"),
                             rs.getString("category"),
                             rs.getDouble("price"),
+                            rs.getString("image"),
                             rs.getString("availability")
                     );
                     menuItems.add(item);
@@ -149,7 +166,9 @@ public class MenuDaoImpl implements MenuDAO {
         return menuItems;
     }
 
-    // search menu items by name
+    // ============================================================
+    // SEARCH FOOD ITEMS BY NAME
+    // ============================================================
     @Override
     public ArrayList<MenuItem> searchMenuItemsByName(String keyword) {
         ArrayList<MenuItem> menuItems = new ArrayList<>();
@@ -167,6 +186,7 @@ public class MenuDaoImpl implements MenuDAO {
                             rs.getString("name"),
                             rs.getString("category"),
                             rs.getDouble("price"),
+                            rs.getString("image"),
                             rs.getString("availability")
                     );
                     menuItems.add(item);

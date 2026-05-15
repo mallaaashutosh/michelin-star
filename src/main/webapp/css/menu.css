@@ -1,12 +1,14 @@
-/* Background color for whole page */
+/* ========== PAGE BACKGROUND ========== */
+/* Sets the background color for the whole page */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+    background-color: #f0f0f0;
 }
 
-/* White box that holds everything */
+/* ========== MAIN CONTAINER ========== */
+/* White box that holds all the content */
 .container {
     max-width: 1000px;
     margin: auto;
@@ -16,7 +18,8 @@ body {
     box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
 }
 
-/* Top bar where title and cart icon sit */
+/* ========== TOP BAR ========== */
+/* Puts title and cart icon on the same line */
 .top-bar {
     display: flex;
     justify-content: space-between;
@@ -26,42 +29,42 @@ body {
     border-bottom: 2px solid #ddd;
 }
 
-/* Remove default margin from heading */
+/* Removes default margin from heading */
 .top-bar h1 {
     margin: 0;
     color: black;
 }
 
-/* Cart icon button style */
+/* ========== CART ICON BUTTON ========== */
+/* Style for the cart button at top right */
 .cart-icon a {
     text-decoration: none;
-    font-size: 24px;
-    background: linear-gradient(to bottom, blue, darkblue);
+    background-color: blue;
     color: white;
     padding: 10px 15px;
-    border-radius: 10px;
+    border-radius: 5px;
     display: inline-block;
 }
 
 /* Red circle showing number of items in cart */
 .cart-icon span {
-    background: red;
+    background-color: red;
     padding: 2px 8px;
     border-radius: 50%;
-    font-size: 14px;
     margin-left: 5px;
 }
 
-/* Search and filter box background */
+/* ========== SEARCH BOX ========== */
+/* Background for search and filter forms */
 .search-box {
     margin-bottom: 20px;
     padding: 10px;
-    background: #f9f9f9;
+    background-color: #f9f9f9;
     border-radius: 5px;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
 }
 
-/* Style for input fields and dropdown */
+/* ========== INPUT FIELDS ========== */
+/* Style for text input and dropdown select */
 input, select {
     padding: 5px;
     width: 200px;
@@ -69,19 +72,20 @@ input, select {
     border: 1px solid #ccc;
 }
 
-/* Button style for search, filter, reset */
+/* ========== BUTTONS ========== */
+/* Style for search, filter, reset buttons */
 .btn {
-    background: linear-gradient(to bottom, blue, darkblue);
+    background-color: blue;
     color: white;
     padding: 5px 10px;
     text-decoration: none;
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
-/* Grid layout - shows menu items in rows */
+/* ========== MENU GRID ========== */
+/* Displays menu cards in rows */
 .menu-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -89,22 +93,31 @@ input, select {
     margin: 20px 0;
 }
 
-/* Each menu item card */
+/* ========== MENU CARD ========== */
+/* Each individual food item card */
 .menu-card {
     background: white;
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 15px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    transition: transform 0.2s;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
 }
 
-/* When hover on card, it gets slightly bigger */
-.menu-card:hover {
-    transform: scale(1.02);
+/* ========== FOOD IMAGE ========== */
+/* Style for the food picture */
+.food-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 15px;
+}
+
+/* ========== FOOD INFO ========== */
+/* Container for food details (name, category, price) */
+.menu-info {
+    flex: 1;
 }
 
 /* Food name style */
@@ -120,7 +133,7 @@ input, select {
     margin: 5px 0;
 }
 
-/* Price style */
+/* Price text style */
 .menu-info .price {
     font-weight: bold;
     color: darkblue;
@@ -134,14 +147,10 @@ input, select {
     margin: 5px 0;
 }
 
-/* Red color when item is unavailable */
-.status.unavailable {
-    color: red;
-}
-
-/* Plus button to add item to cart */
+/* ========== ADD TO CART BUTTON ========== */
+/* Green plus button */
 .add-btn {
-    background: linear-gradient(to bottom, green, darkgreen);
+    background-color: green;
     color: white;
     border: none;
     width: 40px;
@@ -149,22 +158,10 @@ input, select {
     border-radius: 50%;
     font-size: 24px;
     cursor: pointer;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
 
-/* Plus button gets bigger when hover */
-.add-btn:hover {
-    transform: scale(1.1);
-}
-
-/* Disabled button style when item out of stock */
-.add-btn.disabled {
-    background: gray;
-    cursor: not-allowed;
-    font-size: 12px;
-}
-
-/* Container for place order button at bottom */
+/* ========== PLACE ORDER BUTTON ========== */
+/* Container to center the button */
 .order-btn-container {
     text-align: center;
     margin-top: 30px;
@@ -172,19 +169,13 @@ input, select {
     border-top: 2px solid #ddd;
 }
 
-/* Place order button style */
+/* Orange place order button */
 .place-order-btn {
-    background: linear-gradient(to bottom, orange, darkorange);
+    background-color: orange;
     color: white;
     padding: 12px 30px;
     font-size: 18px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-}
-
-/* Place order button gets bigger when hover */
-.place-order-btn:hover {
-    transform: scale(1.05);
 }

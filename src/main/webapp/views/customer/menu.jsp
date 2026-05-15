@@ -5,22 +5,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Restaurant Menu</title>
+    <!-- Link to CSS file for styling -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/menu.css">
 </head>
 <body>
 
 <div class="container">
-    <!-- Top bar with title and cart icon -->
+
+    <!-- ========== TOP BAR WITH CART ICON ========== -->
     <div class="top-bar">
-        <h1>🍽️ Our Menu</h1>
+        <h1>Our Menu</h1>
         <div class="cart-icon">
             <a href="${pageContext.request.contextPath}/cart">
-                🛒 <span id="cartCount">0</span>
+                🛒 Cart <span id="cartCount">0</span>
             </a>
         </div>
     </div>
 
-    <!-- Search form - lets customer search food by name -->
+    <!-- ========== SEARCH FORM ========== -->
+    <!-- Lets customer search food by name -->
     <div class="search-box">
         <form action="${pageContext.request.contextPath}/menu" method="get">
             <input type="hidden" name="action" value="search">
@@ -30,59 +33,58 @@
         </form>
     </div>
 
-    <!-- Filter form - lets customer filter by category -->
+    <!-- ========== CATEGORY FILTER FORM ========== -->
+    <!-- Lets customer filter food by category (Nepali, Chinese, etc) -->
     <div class="search-box">
         <form action="${pageContext.request.contextPath}/menu" method="get">
             <input type="hidden" name="action" value="category">
             <select name="category">
                 <option value="">All Categories</option>
-                <option value="Japanese" ${selectedCategory == 'Japanese' ? 'selected' : ''}>Japanese</option>
-                <option value="Indian" ${selectedCategory == 'Indian' ? 'selected' : ''}>Indian</option>
                 <option value="Nepali" ${selectedCategory == 'Nepali' ? 'selected' : ''}>Nepali</option>
+                <option value="Chinese" ${selectedCategory == 'Chinese' ? 'selected' : ''}>Chinese</option>
+                <option value="Indian" ${selectedCategory == 'Indian' ? 'selected' : ''}>Indian</option>
                 <option value="Italian" ${selectedCategory == 'Italian' ? 'selected' : ''}>Italian</option>
-                <option value="Turkish" ${selectedCategory == 'Turkish' ? 'selected' : ''}>Turkish</option>
+                <option value="FastFood" ${selectedCategory == 'FastFood' ? 'selected' : ''}>Fast Food</option>
+                <option value="Beverages" ${selectedCategory == 'Beverages' ? 'selected' : ''}>Beverages</option>
             </select>
             <button type="submit" class="btn">Filter</button>
         </form>
     </div>
 
-    <!-- Grid of menu items -->
+    <!-- ========== MENU ITEMS GRID ========== -->
+    <!-- Loop through all menu items from database and display each one -->
     <div class="menu-grid">
-        <!-- Loop through each menu item from database -->
         <c:forEach var="item" items="${menuItems}">
             <div class="menu-card">
-                <!-- Left side - food details -->
+                <!-- Food image - loaded from ImageServlet -->
+                <img src="${pageContext.request.contextPath}/uploads/${item.image}" alt="${item.name}" class="food-image">
+
+                <!-- Food details (name, category, price, status) -->
                 <div class="menu-info">
                     <h3>${item.name}</h3>
                     <p class="category">${item.category}</p>
                     <p class="price">Rs. ${item.price}</p>
-                    <p class="status ${item.availability != 'available' ? 'unavailable' : ''}">
-                            ${item.availability}
-                    </p>
+                    <p class="status">${item.availability}</p>
                 </div>
-                <!-- Right side - add button -->
+
+                <!-- Add to cart button -->
                 <div class="menu-action">
-                    <c:if test="${item.availability == 'available'}">
-                        <button class="add-btn" onclick="addToCart(${item.menuId}, '${item.name}', ${item.price})">
-                            +
-                        </button>
-                    </c:if>
-                    <c:if test="${item.availability != 'available'}">
-                        <button class="add-btn disabled" disabled>OUT</button>
-                    </c:if>
+                    <button class="add-btn" onclick="addToCart(${item.menuId}, '${item.name}', ${item.price})">
+                        +
+                    </button>
                 </div>
             </div>
         </c:forEach>
     </div>
 
-    <!-- Place order button at bottom -->
+    <!-- ========== PLACE ORDER BUTTON ========== -->
+    <!-- Takes customer to cart page to review order -->
     <div class="order-btn-container">
         <button class="place-order-btn" onclick="goToCart()">Place Order</button>
     </div>
 </div>
 
-<!-- Link to main.js file -->
+<!-- Link to JavaScript file for cart functions -->
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
-
 </body>
 </html>
