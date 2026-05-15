@@ -70,7 +70,7 @@
     </div>
 
     <div class="copyright">
-         2026 Maison Blanche Restaurant. All Rights Reserved.
+        &copy; 2026 Maison Blanche Restaurant. All Rights Reserved.
     </div>
 
 </footer>
