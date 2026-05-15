@@ -32,7 +32,7 @@ public class MenuServlet extends HttpServlet {
         if (action == null) {
             ArrayList<MenuItem> menuItems = menuDao.fetchAllMenuItems();
             request.setAttribute("menuItems", menuItems);
-            request.getRequestDispatcher("/menu.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/customer/menu.jsp").forward(request, response);
         }
         // filter by category (like Japanese or Nepali)
         else if ("category".equals(action)) {
@@ -40,7 +40,7 @@ public class MenuServlet extends HttpServlet {
             ArrayList<MenuItem> menuItems = menuDao.fetchMenuItemsByCategory(category);
             request.setAttribute("menuItems", menuItems);
             request.setAttribute("selectedCategory", category);
-            request.getRequestDispatcher("/menu.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/customer/menu.jsp").forward(request, response);
         }
         // search by name (like searching for "momo")
         else if ("search".equals(action)) {
@@ -48,7 +48,7 @@ public class MenuServlet extends HttpServlet {
             ArrayList<MenuItem> menuItems = menuDao.searchMenuItemsByName(keyword);
             request.setAttribute("menuItems", menuItems);
             request.setAttribute("searchKeyword", keyword);
-            request.getRequestDispatcher("/menu.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/customer/menu.jsp").forward(request, response);
         }
         // delete a menu item
         else if ("delete".equals(action)) {

@@ -7,94 +7,71 @@ DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS cart;
 DROP TABLE IF EXISTS menu;
 DROP TABLE IF EXISTS user;
---DROP TABLE IF EXISTS customer;
---DROP TABLE IF EXISTS admin;
 
 CREATE TABLE user (
-    user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    phone_number VARCHAR(20),
-    password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'customer') NOT NULL,
-    status VARCHAR(20) DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                      user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                      name VARCHAR(255) NOT NULL,
+                      email VARCHAR(255) NOT NULL UNIQUE,
+                      phone_number VARCHAR(20),
+                      password VARCHAR(255) NOT NULL,
+                      role ENUM('admin', 'customer') NOT NULL,
+                      status VARCHAR(20) DEFAULT 'pending',
+                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
---CREATE TABLE admin (
---admin_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
---name VARCHAR(255) NOT NULL,
---email VARCHAR(255) NOT NULL UNIQUE,
---password VARCHAR(255) NOT NULL,
---created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
---);
---
---
---CREATE TABLE customer (
---customer_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
---name VARCHAR(255) NOT NULL,
---phone_number VARCHAR(20) NOT NULL UNIQUE,
---email VARCHAR(255) NOT NULL UNIQUE,
---password VARCHAR(255) NOT NULL,
---status VARCHAR(20) DEFAULT 'pending',
---created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
---);
 
 
 CREATE TABLE menu (
-menu_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(255) NOT NULL,
-category VARCHAR(255) NOT NULL,
-price DECIMAL(10,2) NOT NULL,
-image VARCHAR(500),
-availability VARCHAR(20) DEFAULT 'available',
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                      menu_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                      name VARCHAR(255) NOT NULL,
+                      category VARCHAR(255) NOT NULL,
+                      price DECIMAL(10,2) NOT NULL,
+                      image VARCHAR(500),
+                      availability VARCHAR(20) DEFAULT 'available',
+                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 
 -- CART TABLE (cleared after payment)
 CREATE TABLE cart (
-cart_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-customer_id INT NOT NULL,
-menu_id INT NOT NULL,
-quantity INT NOT NULL DEFAULT 1,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
+                      cart_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                      customer_id INT NOT NULL,
+                      menu_id INT NOT NULL,
+                      quantity INT NOT NULL DEFAULT 1,
+                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                      FOREIGN KEY (customer_id) REFERENCES user(user_id),
+                      FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 );
 
 
 -- ORDERS TABLE (one row per item ordered)
 CREATE TABLE orders (
-order_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-customer_id INT NOT NULL,
-menu_id INT NOT NULL,
-menu_name VARCHAR(255) NOT NULL,
-quantity INT NOT NULL DEFAULT 1,
-price DECIMAL(10,2) NOT NULL,
-total_amount DECIMAL(10,2) NOT NULL,
-table_number INT,
-payment_method VARCHAR(50) DEFAULT 'cash',
-status VARCHAR(20) DEFAULT 'pending',
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
+                        order_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                        customer_id INT NOT NULL,
+                        menu_id INT NOT NULL,
+                        menu_name VARCHAR(255) NOT NULL,
+                        quantity INT NOT NULL DEFAULT 1,
+                        price DECIMAL(10,2) NOT NULL,
+                        total_amount DECIMAL(10,2) NOT NULL,
+                        table_number INT,
+                        payment_method VARCHAR(50) DEFAULT 'cash',
+                        status VARCHAR(20) DEFAULT 'pending',
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                        FOREIGN KEY (customer_id) REFERENCES user(user_id),
+                        FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 );
 
 
 -- PAYMENT TABLE (one row per complete payment)
 CREATE TABLE payment (
-payment_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-customer_id INT NOT NULL,
-total_amount DECIMAL(10,2) NOT NULL,
-method VARCHAR(50) DEFAULT 'cash',
-status VARCHAR(20) DEFAULT 'paid',
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+                         payment_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                         customer_id INT NOT NULL,
+                         total_amount DECIMAL(10,2) NOT NULL,
+                         method VARCHAR(50) DEFAULT 'cash',
+                         status VARCHAR(20) DEFAULT 'paid',
+                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                         FOREIGN KEY (customer_id) REFERENCES user(user_id)
 );
