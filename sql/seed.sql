@@ -43,8 +43,6 @@ INSERT INTO user (name, email, phone_number, password, role, status) VALUES
 --('Anita Poudel', '9836091876', 'anita@gmail.com', 'anita123', 'pending'),
 --('Suikriti Aryal', '9836591876', 'suikriti@gmail.com', 'suikriti123', 'pending');
 
-
-
 INSERT INTO menu (name, category, price, image, availability) VALUES
 ('Steam Momo', 'Nepali', 180.00, 'steam-momo.jpg', 'available'),
 ('Fried Momo', 'Nepali', 200.00, 'fried-momo.jpg', 'available'),
