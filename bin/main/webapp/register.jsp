@@ -28,7 +28,7 @@
     <div class="error"><%= request.getAttribute("error") %></div>
     <% } %>
 
-    git pull origin main    <form action="<%= request.getContextPath() %>/register" method="post" enctype="multipart/form-data">
+    <form action="<%= request.getContextPath() %>/register" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="name">Full Name</label>
             <input type="text" id="name" name="name" required>
