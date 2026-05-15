@@ -57,7 +57,14 @@
         <c:forEach var="item" items="${menuItems}">
             <div class="menu-card">
                 <!-- Food image - loaded from ImageServlet -->
-                <img src="${pageContext.request.contextPath}/uploads/${item.image}" alt="${item.name}" class="food-image">
+                <c:choose>
+                    <c:when test="${not empty item.image}">
+                        <img src="${pageContext.request.contextPath}/uploads/${item.image}" alt="${item.name}" class="food-image">
+                    </c:when>
+                    <c:otherwise>
+                        <div class="food-image food-image-placeholder">&#9733;</div>
+                    </c:otherwise>
+                </c:choose>
 
                 <!-- Food details (name, category, price, status) -->
                 <div class="menu-info">
@@ -69,9 +76,12 @@
 
                 <!-- Add to cart button -->
                 <div class="menu-action">
-                    <button class="add-btn" onclick="addToCart(${item.menuId}, '${item.name}', ${item.price})">
-                        +
-                    </button>
+                    <c:if test="${item.availability == 'available'}">
+                        <button class="add-btn" data-id="${item.menuId}" data-name="${item.name}" data-price="${item.price}" onclick="addToCartFromBtn(this)">+</button>
+                    </c:if>
+                    <c:if test="${item.availability != 'available'}">
+                        <button class="add-btn disabled" disabled>OUT</button>
+                    </c:if>
                 </div>
             </div>
         </c:forEach>
@@ -85,6 +95,11 @@
 </div>
 
 <!-- Link to JavaScript file for cart functions -->
-<script src="${pageContext.request.contextPath}/js/main.js"></script>
+<script src="${pageContext.request.contextPath}/javascript/main.js"></script>
+<script>
+function addToCartFromBtn(btn) {
+    addToCart(btn.dataset.id, btn.dataset.name, parseFloat(btn.dataset.price));
+}
+</script>
 </body>
 </html>

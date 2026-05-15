@@ -13,80 +13,86 @@ import java.util.ArrayList;
 @WebServlet("/menu")
 public class MenuServlet extends HttpServlet {
 
+    private static final String MENU_VIEW = "/views/customer/menu.jsp";
+
     private MenuDaoImpl menuDao;
 
-    // this runs when servlet first starts
     @Override
     public void init() {
         menuDao = new MenuDaoImpl();
     }
 
-    // handles GET requests (viewing data)
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
         String action = request.getParameter("action");
+        String ctx = request.getContextPath();
 
-        // no action = show all menu items
         if (action == null) {
-            ArrayList<MenuItem> menuItems = menuDao.fetchAllMenuItems();
-            request.setAttribute("menuItems", menuItems);
-            request.getRequestDispatcher("/menu.jsp").forward(request, response);
-        }
-        // filter by category (like Japanese or Nepali)
-        else if ("category".equals(action)) {
+            forwardMenu(request, response, menuDao.fetchAllMenuItems(), null, null);
+        } else if ("category".equals(action)) {
             String category = request.getParameter("category");
-            ArrayList<MenuItem> menuItems = menuDao.fetchMenuItemsByCategory(category);
-            request.setAttribute("menuItems", menuItems);
-            request.setAttribute("selectedCategory", category);
-            request.getRequestDispatcher("/menu.jsp").forward(request, response);
-        }
-        // search by name (like searching for "momo")
-        else if ("search".equals(action)) {
+            forwardMenu(request, response, menuDao.fetchMenuItemsByCategory(category), category, null);
+        } else if ("search".equals(action)) {
             String keyword = request.getParameter("keyword");
-            ArrayList<MenuItem> menuItems = menuDao.searchMenuItemsByName(keyword);
-            request.setAttribute("menuItems", menuItems);
-            request.setAttribute("searchKeyword", keyword);
-            request.getRequestDispatcher("/menu.jsp").forward(request, response);
-        }
-        // delete a menu item
-        else if ("delete".equals(action)) {
+            forwardMenu(request, response, menuDao.searchMenuItemsByName(keyword), null, keyword);
+        } else if ("delete".equals(action)) {
             int menuId = Integer.parseInt(request.getParameter("id"));
             menuDao.deleteMenuItem(menuId);
-            response.sendRedirect("menu");
+            response.sendRedirect(ctx + "/menu");
         }
     }
 
-    // handles POST requests (adding or updating data)
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
         String action = request.getParameter("action");
+        String ctx = request.getContextPath();
 
-        // add new food item
         if ("add".equals(action)) {
-            String name = request.getParameter("name");
-            String category = request.getParameter("category");
-            double price = Double.parseDouble(request.getParameter("price"));
-            String availability = request.getParameter("availability");
-
-            MenuItem newItem = new MenuItem(name, category, price, availability);
+            MenuItem newItem = new MenuItem(
+                    request.getParameter("name"),
+                    request.getParameter("category"),
+                    Double.parseDouble(request.getParameter("price")),
+                    nullToEmpty(request.getParameter("image")),
+                    request.getParameter("availability"));
             menuDao.insertMenuItem(newItem);
-            response.sendRedirect("menu");
-        }
-        // update existing food item
-        else if ("edit".equals(action)) {
+        } else if ("edit".equals(action)) {
             int menuId = Integer.parseInt(request.getParameter("menuId"));
-            String name = request.getParameter("name");
-            String category = request.getParameter("category");
-            double price = Double.parseDouble(request.getParameter("price"));
-            String availability = request.getParameter("availability");
-
-            MenuItem item = new MenuItem(menuId, name, category, price, availability);
+            MenuItem existing = menuDao.findMenuItemById(menuId);
+            String image = request.getParameter("image");
+            if (image == null || image.isBlank()) {
+                image = existing != null ? existing.getImage() : "";
+            }
+            MenuItem item = new MenuItem(
+                    menuId,
+                    request.getParameter("name"),
+                    request.getParameter("category"),
+                    Double.parseDouble(request.getParameter("price")),
+                    image,
+                    request.getParameter("availability"));
             menuDao.updateMenuItem(item);
-            response.sendRedirect("menu");
         }
+
+        response.sendRedirect(ctx + "/menu");
+    }
+
+    private void forwardMenu(HttpServletRequest request, HttpServletResponse response,
+                             ArrayList<MenuItem> menuItems, String category, String keyword)
+            throws ServletException, IOException {
+        request.setAttribute("menuItems", menuItems);
+        if (category != null) {
+            request.setAttribute("selectedCategory", category);
+        }
+        if (keyword != null) {
+            request.setAttribute("searchKeyword", keyword);
+        }
+        request.getRequestDispatcher(MENU_VIEW).forward(request, response);
+    }
+
+    private static String nullToEmpty(String value) {
+        return value == null ? "" : value;
     }
 }

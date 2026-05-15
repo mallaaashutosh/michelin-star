@@ -68,14 +68,22 @@ public class AdminMenuServlet extends HttpServlet {
                     request.getParameter("name"),
                     request.getParameter("category"),
                     Double.parseDouble(request.getParameter("price")),
+                    nullToEmpty(request.getParameter("image")),
                     request.getParameter("availability"));
             menuDao.insertMenuItem(newItem);
         } else if ("edit".equals(action)) {
+            int menuId = Integer.parseInt(request.getParameter("menuId"));
+            MenuItem existing = menuDao.findMenuItemById(menuId);
+            String image = request.getParameter("image");
+            if (image == null || image.isBlank()) {
+                image = existing != null ? existing.getImage() : "";
+            }
             MenuItem item = new MenuItem(
-                    Integer.parseInt(request.getParameter("menuId")),
+                    menuId,
                     request.getParameter("name"),
                     request.getParameter("category"),
                     Double.parseDouble(request.getParameter("price")),
+                    image,
                     request.getParameter("availability"));
             menuDao.updateMenuItem(item);
         }
@@ -90,5 +98,9 @@ public class AdminMenuServlet extends HttpServlet {
         }
         User user = (User) session.getAttribute("user");
         return user != null && user.isAdmin();
+    }
+
+    private static String nullToEmpty(String value) {
+        return value == null ? "" : value;
     }
 }
