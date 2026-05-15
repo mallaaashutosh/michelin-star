@@ -1,5 +1,5 @@
-<%@ include file="includes/header.jsp" %>
-<%@ include file="includes/navbar.jsp" %>
+<%@ include file="/includes/header.jsp" %>
+<%@ include file="/includes/navbar.jsp" %>
 <style>
     /* ================= RESERVATION ================= */
 
@@ -262,11 +262,11 @@
 
         <div class="reservation-buttons">
 
-            <a href="${pageContext.request.contextPath}/views/customer/menu.jsp" class="btn">
+            <a href="${pageContext.request.contextPath}/menu" class="btn">
                 Explore Menu
             </a>
 
-            <a href="${pageContext.request.contextPath}/login.jsp" class="outline-btn">
+            <a href="${pageContext.request.contextPath}/login" class="outline-btn">
                 Reserve Now
             </a>
 
@@ -506,4 +506,4 @@
 
 </section>
 
-<%@ include file="includes/footer.jsp" %>
+<%@ include file="/includes/footer.jsp" %>

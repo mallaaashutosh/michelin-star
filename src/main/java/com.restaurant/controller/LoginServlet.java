@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
                 if (user.isAdmin()) {
                     response.sendRedirect(ctx + "/admin/dashboard");
                 } else {
-                    response.sendRedirect(ctx + "/home.jsp");
+                    response.sendRedirect(ctx + "/home");
                 }
             } else {
                 request.setAttribute("error", "Invalid email or password.");

@@ -31,7 +31,7 @@ public class AuthenticationFilter implements Filter {
         }
 
         if (!user.isAdmin()) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/home.jsp");
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
             return;
         }
 
