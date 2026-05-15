@@ -27,7 +27,7 @@ public class RegisterServlet extends HttpServlet {
     private static final String UPLOAD_DIR = "uploads";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("userPortal/register.jsp").forward(request, response);
+        request.getRequestDispatcher("/register.jsp").forward(request, response);
     }
 
     @Override
@@ -40,20 +40,20 @@ public class RegisterServlet extends HttpServlet {
 
         if (name == null || name.isEmpty() || email == null || email.isEmpty() || password == null || password.isEmpty()) {
             request.setAttribute("error", "All fields are required.");
-            request.getRequestDispatcher("userPortal/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/register.jsp").forward(request, response);
             return;
         }
 
         if (!password.equals(confirmPassword)) {
             request.setAttribute("error", "Passwords do not match.");
-            request.getRequestDispatcher("userPortal/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/register.jsp").forward(request, response);
             return;
         }
 
         try {
             if (customerDAO.isEmailExists(email)) {
                 request.setAttribute("error", "Email already registered.");
-                request.getRequestDispatcher("userPortal/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/register.jsp").forward(request, response);
                 return;
             }
 
@@ -81,12 +81,12 @@ public class RegisterServlet extends HttpServlet {
                  response.sendRedirect(request.getContextPath() + "/login");
              } else {
                 request.setAttribute("error", "Registration failed. Try again.");
-                request.getRequestDispatcher("userPortal/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/register.jsp").forward(request, response);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("userPortal/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/register.jsp").forward(request, response);
         }
     }
 
