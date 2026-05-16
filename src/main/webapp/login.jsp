@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="jakarta.servlet.http.Cookie" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,13 +16,42 @@
         .btn:hover { background: #0056b3; }
         .error { color: #d9534f; background: #f2dede; padding: 0.5rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem; text-align: center; }
         .success { color: #3c763d; background: #dff0d8; padding: 0.5rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem; text-align: center; }
+        .info { color: #1a5276; background: #eef6fc; padding: 0.5rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem; text-align: center; }
         .footer { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #777; }
         .footer a { color: #007bff; text-decoration: none; }
     </style>
 </head>
 <body>
+<%
+    String rememberedEmail = "";
+    String flashRegSuccess = (String) session.getAttribute("flashRegisterSuccess");
+    if (flashRegSuccess != null) {
+        session.removeAttribute("flashRegisterSuccess");
+    }
+    String flashAuthRequired = (String) session.getAttribute("flashAuthRequired");
+    if (flashAuthRequired != null) {
+        session.removeAttribute("flashAuthRequired");
+    }
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("userEmail")) {
+                rememberedEmail = cookie.getValue();
+                break;
+            }
+        }
+    }
+%>
 <div class="login-container">
     <h2>Login</h2>
+
+    <% if (flashAuthRequired != null) { %>
+    <div class="info"><%= flashAuthRequired %></div>
+    <% } %>
+
+    <% if (flashRegSuccess != null) { %>
+    <div class="success"><%= flashRegSuccess %></div>
+    <% } %>
 
     <% if (request.getAttribute("error") != null) { %>
     <div class="error"><%= request.getAttribute("error") %></div>
@@ -30,19 +60,6 @@
     <% if (request.getAttribute("success") != null) { %>
     <div class="success"><%= request.getAttribute("success") %></div>
     <% } %>
-
-    <%
-        String rememberedEmail = "";
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("userEmail")) {
-                    rememberedEmail = cookie.getValue();
-                    break;
-                }
-            }
-        }
-    %>
 
     <form action="<%= request.getContextPath() %>/login" method="post">
         <div class="form-group">

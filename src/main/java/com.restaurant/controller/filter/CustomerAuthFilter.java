@@ -12,8 +12,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter("/admin/*")
-public class AuthenticationFilter implements Filter {
+/**
+ * Requires a logged-in user for customer routes (menu, etc.).
+ * Unauthenticated users are redirected to the login page.
+ */
+@WebFilter(urlPatterns = {"/menu", "/home"})
+public class CustomerAuthFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -26,12 +30,10 @@ public class AuthenticationFilter implements Filter {
         User user = session != null ? (User) session.getAttribute("user") : null;
 
         if (user == null) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
-            return;
-        }
-
-        if (!user.isAdmin()) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
+            String ctx = httpRequest.getContextPath();
+            HttpSession writeSession = httpRequest.getSession(true);
+            writeSession.setAttribute("flashAuthRequired", "Please sign in to continue.");
+            httpResponse.sendRedirect(ctx + "/login");
             return;
         }
 

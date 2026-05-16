@@ -1,14 +1,15 @@
 CREATE DATABASE IF NOT EXISTS restaurant;
 USE restaurant;
 
+
 DROP TABLE IF EXISTS payment;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS cart;
 DROP TABLE IF EXISTS menu;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS user;
 
-CREATE TABLE users (
-                      users_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE user (
+                      user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                       name VARCHAR(255) NOT NULL,
                       email VARCHAR(255) NOT NULL UNIQUE,
                       phone_number VARCHAR(20),
@@ -35,13 +36,11 @@ CREATE TABLE menu (
 -- CART TABLE (cleared after payment)
 CREATE TABLE cart (
                       cart_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                      users_id INT NOT NULL,
+                      customer_id INT NOT NULL,
                       menu_id INT NOT NULL,
                       quantity INT NOT NULL DEFAULT 1,
-                      table_number INT NOT NULL,
                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                      FOREIGN KEY (users_id) REFERENCES users(users_id),
+                      FOREIGN KEY (customer_id) REFERENCES user(user_id),
                       FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 );
 
@@ -49,7 +48,7 @@ CREATE TABLE cart (
 -- ORDERS TABLE (one row per item ordered)
 CREATE TABLE orders (
                         order_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                        users_id INT NOT NULL,
+                        customer_id INT NOT NULL,
                         menu_id INT NOT NULL,
                         menu_name VARCHAR(255) NOT NULL,
                         quantity INT NOT NULL DEFAULT 1,
@@ -60,17 +59,19 @@ CREATE TABLE orders (
                         status VARCHAR(20) DEFAULT 'pending',
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                        FOREIGN KEY (users_id) REFERENCES users(users_id),
+                        FOREIGN KEY (customer_id) REFERENCES user(user_id),
                         FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 );
+
+
 -- PAYMENT TABLE (one row per complete payment)
 CREATE TABLE payment (
                          payment_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                         users_id INT NOT NULL,
+                         customer_id INT NOT NULL,
                          total_amount DECIMAL(10,2) NOT NULL,
                          method VARCHAR(50) DEFAULT 'cash',
                          status VARCHAR(20) DEFAULT 'paid',
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                         FOREIGN KEY (users_id) REFERENCES users(users_id)
+                         FOREIGN KEY (customer_id) REFERENCES user(user_id)
 );
