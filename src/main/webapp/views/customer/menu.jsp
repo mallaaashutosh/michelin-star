@@ -22,7 +22,11 @@
 
     <!-- TOP BAR WITH CART ICON -->
     <div class="top-bar">
+        <!-- Back button to go home -->
+        <a href="${pageContext.request.contextPath}/" class="back-btn">← Back to Home</a>
+
         <h1>Our Menu</h1>
+
         <div class="cart-icon">
             <a href="${pageContext.request.contextPath}/cart">
                 🛒 Cart <span id="cartCount">0</span>
