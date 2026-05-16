@@ -179,3 +179,21 @@ input, select {
     border-radius: 8px;
     cursor: pointer;
 }
+
+/* Place Order button styling */
+.place-order-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #e67e22;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+.place-order-btn:hover {
+    background-color: #d35400;
+}
