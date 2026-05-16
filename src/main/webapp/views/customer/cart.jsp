@@ -92,19 +92,11 @@
         <% } %>
     </div>
 
-    <!-- Cart summary with totals -->
+    <!-- Cart summary - NO delivery fee (dine-in only) -->
     <div class="cart-summary">
-        <div class="summary-row">
-            <span>Subtotal:</span>
-            <span>Rs. <%= grandTotal %></span>
-        </div>
-        <div class="summary-row delivery">
-            <span>Delivery Fee:</span>
-            <span>Rs. 50</span>
-        </div>
         <div class="summary-row total">
-            <span>Total:</span>
-            <span>Rs. <%= grandTotal + 50 %></span>
+            <span>Total Amount:</span>
+            <span>Rs. <%= grandTotal %></span>
         </div>
     </div>
 
@@ -115,7 +107,7 @@
             <input type="hidden" name="action" value="clear">
             <button type="submit" class="clear-btn">Clear Cart</button>
         </form>
-        <a href="${pageContext.request.contextPath}/views/customer/checkout.jsp" class="checkout-btn">Proceed to Checkout →</a>
+        <a href="${pageContext.request.contextPath}/payment" class="checkout-btn">Proceed to Checkout →</a>
     </div>
     <% } %>
 </div>

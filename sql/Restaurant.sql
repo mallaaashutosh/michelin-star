@@ -54,7 +54,6 @@ CREATE TABLE orders (
                         quantity INT NOT NULL DEFAULT 1,
                         price DECIMAL(10,2) NOT NULL,
                         total_amount DECIMAL(10,2) NOT NULL,
-                        table_number INT,
                         payment_method VARCHAR(50) DEFAULT 'cash',
                         status VARCHAR(20) DEFAULT 'pending',
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
