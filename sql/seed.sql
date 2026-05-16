@@ -36,14 +36,14 @@ INSERT INTO menu (name, category, price, image, availability) VALUES
                                                                   ('Masala Tea', 'Beverages', 60.00, 'masala-tea.jpg', 'available'),
                                                                   ('Fresh Lime Soda', 'Beverages', 80.00, 'lime-soda.jpg', 'available');
 
-INSERT INTO orders (customer_id, menu_id, menu_name, quantity, price, total_amount, table_number, payment_method, status) VALUES
+INSERT INTO orders (user_id, menu_id, menu_name, quantity, price, total_amount, table_number, payment_method, status) VALUES
                                                                                                                               (6, 1, 'Steam Momo',       2, 180.00, 360.00, 3, 'cash', 'pending'),
                                                                                                                               (6, 9, 'Masala Tea',       2,  60.00, 120.00, 3, 'cash', 'pending'),
                                                                                                                               (7, 4, 'Chicken Chowmein', 1, 220.00, 220.00, 1, 'card', 'completed'),
                                                                                                                               (8, 3, 'Dal Bhat Tarkari', 1, 250.00, 250.00, 5, 'cash', 'completed'),
                                                                                                                               (8, 10,'Fresh Lime Soda',  1,  80.00,  80.00, 5, 'cash', 'completed');
 
-INSERT INTO payment (customer_id, total_amount, method, status) VALUES
-                                                                    (6, 480.00, 'cash', 'paid'),
-                                                                    (7, 220.00, 'card', 'paid'),
-                                                                    (8, 330.00, 'cash', 'paid');
+INSERT INTO payment (user_id, total_amount, method, status) VALUES
+(6, 480.00, 'cash', 'paid'),
+(7, 220.00, 'card', 'paid'),
+(8, 330.00, 'cash', 'paid');

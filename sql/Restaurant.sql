@@ -44,8 +44,6 @@ CREATE TABLE cart (
                       FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 );
 
-
--- ORDERS TABLE (one row per item ordered)
 CREATE TABLE orders (
                         order_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         customer_id INT NOT NULL,
@@ -54,6 +52,7 @@ CREATE TABLE orders (
                         quantity INT NOT NULL DEFAULT 1,
                         price DECIMAL(10,2) NOT NULL,
                         total_amount DECIMAL(10,2) NOT NULL,
+                        table_number INT NOT NULL,
                         payment_method VARCHAR(50) DEFAULT 'cash',
                         status VARCHAR(20) DEFAULT 'pending',
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -62,8 +61,6 @@ CREATE TABLE orders (
                         FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 );
 
-
--- PAYMENT TABLE (one row per complete payment)
 CREATE TABLE payment (
                          payment_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                          customer_id INT NOT NULL,
