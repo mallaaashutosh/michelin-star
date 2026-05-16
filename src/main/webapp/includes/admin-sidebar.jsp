@@ -23,7 +23,7 @@
         <a href="<%= ctx %>/admin/users" class="<%= "users".equals(currentPage) ? "active" : "" %>">
             <span class="nav-icon">&#9786;</span> Users
         </a>
-        <a href="<%= ctx %>/">
+        <a href="<%= ctx %>/site">
             <span class="nav-icon">&#8962;</span> View Site
         </a>
     </nav>

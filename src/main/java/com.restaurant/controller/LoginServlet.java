@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private CustomerDAO customerDAO = new CustomerDaoImpl();
+    private final CustomerDAO customerDAO = new CustomerDaoImpl();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/login.jsp").forward(request, response);
@@ -25,6 +25,9 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
+        String ctx = request.getContextPath();
+
+        HttpSession session = request.getSession(true);
 
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
             request.setAttribute("error", "Email and Password are required.");
@@ -36,24 +39,24 @@ public class LoginServlet extends HttpServlet {
             User user = customerDAO.loginUser(email, password);
 
             if (user != null) {
-                HttpSession session = request.getSession();
                 session.setAttribute("user", user);
 
                 if ("on".equals(rememberMe)) {
                     Cookie emailCookie = new Cookie("userEmail", email);
                     emailCookie.setMaxAge(60 * 60 * 24 * 7);
+                    emailCookie.setPath(ctx.isEmpty() ? "/" : ctx);
                     response.addCookie(emailCookie);
                 } else {
                     Cookie emailCookie = new Cookie("userEmail", "");
                     emailCookie.setMaxAge(0);
+                    emailCookie.setPath(ctx.isEmpty() ? "/" : ctx);
                     response.addCookie(emailCookie);
                 }
 
-                String ctx = request.getContextPath();
                 if (user.isAdmin()) {
                     response.sendRedirect(ctx + "/admin/dashboard");
                 } else {
-                    response.sendRedirect(ctx + "/home");
+                    response.sendRedirect(ctx + "/site");
                 }
             } else {
                 request.setAttribute("error", "Invalid email or password.");
