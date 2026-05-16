@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.restaurant.entity.User" %>
 <%@ include file="/includes/header.jsp" %>
 <%@ include file="/includes/navbar.jsp" %>
 <style>
@@ -261,15 +263,12 @@
         </p>
 
         <div class="reservation-buttons">
-
             <a href="${pageContext.request.contextPath}/menu" class="btn">
                 Explore Menu
             </a>
-
-            <a href="${pageContext.request.contextPath}/login" class="outline-btn">
+            <a href="${pageContext.request.contextPath}/menu" class="outline-btn">
                 Reserve Now
             </a>
-
         </div>
 
     </div>

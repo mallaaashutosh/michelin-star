@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import com.restaurant.utils.PasswordHasher;
 
@@ -37,6 +38,7 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
+        String ctx = request.getContextPath();
 
         if (name == null || name.isEmpty() || email == null || email.isEmpty() || password == null || password.isEmpty()) {
             request.setAttribute("error", "All fields are required.");
@@ -76,10 +78,11 @@ public class RegisterServlet extends HttpServlet {
             User user = new User(name, phone, email, hashedPassword);
             user.setProfileImage(fileName);
 
-             if (customerDAO.registerUser(user)) {
-                 request.setAttribute("success", "Registration successful! Please login.");
-                 response.sendRedirect(request.getContextPath() + "/login");
-             } else {
+            if (customerDAO.registerUser(user)) {
+                HttpSession session = request.getSession(true);
+                session.setAttribute("flashRegisterSuccess", "Registration successful! Please sign in.");
+                response.sendRedirect(ctx + "/login");
+            } else {
                 request.setAttribute("error", "Registration failed. Try again.");
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
             }
