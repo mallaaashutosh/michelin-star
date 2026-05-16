@@ -4,15 +4,15 @@ DELETE FROM payment;
 DELETE FROM orders;
 DELETE FROM cart;
 DELETE FROM menu;
-DELETE FROM user;
+DELETE FROM users;
 
 ALTER TABLE payment AUTO_INCREMENT = 1;
 ALTER TABLE orders AUTO_INCREMENT = 1;
 ALTER TABLE cart AUTO_INCREMENT = 1;
 ALTER TABLE menu AUTO_INCREMENT = 1;
-ALTER TABLE user AUTO_INCREMENT = 1;
+ALTER TABLE users AUTO_INCREMENT = 1;
 
-INSERT INTO user (name, email, phone_number, password, role, status) VALUES
+INSERT INTO users (name, email, phone_number, password, role, status) VALUES
 ('Archana Bhattarai Sharma', 'archana@michelinstar.com', '9801000001', 'archana123', 'admin', 'active'),
 ('Anisha Gurung', 'anisha@michelinstar.com', '9801000002', 'anisha123', 'admin', 'active'),
 ('Preeti Kumari Dhamala', 'preeti@michelinstar.com', '9801000003', 'preeti123', 'admin', 'active'),
@@ -36,19 +36,19 @@ INSERT INTO menu (name, category, price, image, availability) VALUES
 ('Masala Tea', 'Beverages', 60.00, 'masala-tea.jpg', 'available'),
 ('Fresh Lime Soda', 'Beverages', 80.00, 'lime-soda.jpg', 'available');
 
-INSERT INTO orders (customer_id, menu_id, order_name, quantity, price, total_amount, table_number, payment_method, status) VALUES
+INSERT INTO orders (users_id, menu_id, menu_name, quantity, price, total_amount, table_number, payment_method, status) VALUES
 (6, 1, 'Steam Momo', 2, 180.00, 360.00, 3, 'cash', 'pending'),
 (6, 9, 'Masala Tea', 2,  60.00, 120.00, 3, 'cash', 'pending'),
 (7, 4, 'Chicken Chowmein', 1, 220.00, 220.00, 1, 'card', 'completed'),
 (8, 3, 'Dal Bhat Tarkari', 1, 250.00, 250.00, 5, 'cash', 'completed'),
 (8, 10,'Fresh Lime Soda',  1,  80.00,  80.00, 5, 'cash', 'completed');
 
-INSERT INTO payment (customer_id, total_amount, method, status) VALUES
+INSERT INTO payment (users_id, total_amount, method, status) VALUES
 (6, 480.00, 'cash', 'paid'),
 (7, 220.00, 'card', 'paid'),
 (8, 330.00, 'cash', 'paid');
 
-INSERT INTO cart (user_id, menu_id, quantity, table_number) VALUES
+INSERT INTO cart (users_id, menu_id, quantity, table_number) VALUES
 (6, 1, 2, 5),
 (6, 9, 1, 5),
 (7, 3, 1, 3),
@@ -59,3 +59,4 @@ INSERT INTO cart (user_id, menu_id, quantity, table_number) VALUES
 (10, 5, 1, 4),
 (6, 4, 1, 5),
 (7, 1, 3, 3);
+
