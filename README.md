@@ -58,7 +58,7 @@ git clone https://github.com/mallaaashutosh/michelin-star.git
 cd michelin-star
 
 # Build with Maven
-mvn clean package
+mvn clean package cargo:run
 
 # Deploy the generated WAR to Tomcat
 # Copy target/michelin-star.war to Tomcat's webapps/ directory
