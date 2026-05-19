@@ -60,7 +60,7 @@ INSERT INTO menu (name, category, price, image, availability) VALUES
 ('Chicken Biryani', 'Indian', 300.00, 'chicken-biryani.jpg', 'available'),
 ('Garlic Naan', 'Indian', 80.00, 'garlic-naan.jpg', 'available'),
 ('Paneer Tikka', 'Indian', 280.00, 'paneer-tikka.jpg', 'available'),
-                                                                  ('Dal Makhani', 'Indian', 260.00, 'dal-makhani.jpg', 'available'),
+('Dal Makhani', 'Indian', 260.00, 'dal-makhani.jpg', 'available'),
 
 -- Italian dishes
 ('Margherita Pizza', 'Italian', 450.00, 'pizza.jpg', 'available'),
@@ -84,17 +84,3 @@ INSERT INTO menu (name, category, price, image, availability) VALUES
 ('Iced Tea', 'Beverages', 90.00, 'iced-tea.jpg', 'available'),
 ('Fresh Orange Juice', 'Beverages', 110.00, 'fresh-orange-juice.jpg', 'available'),
 ('Hot Chocolate', 'Beverages', 130.00, 'hot-chocolate.jpg', 'available');
-
--- Sample orders for customers 6–8 (mix of pending and completed)
-INSERT INTO orders (customer_id, menu_id, menu_name, quantity, price, total_amount, table_number, payment_method, status) VALUES
-(6, 1, 'Steam Momo', 2, 180.00, 360.00, 3, 'cash', 'pending'),      -- Hari, table 3
-(6, 19, 'Masala Tea', 2, 60.00, 120.00, 3, 'cash', 'pending'),       -- Hari, same table
-(7, 6, 'Chicken Chowmein', 1, 220.00, 220.00, 1, 'card', 'completed'), -- Nirajan, table 1
-(8, 3, 'Dal Bhat Tarkari', 1, 250.00, 250.00, 5, 'cash', 'completed'), -- Jwala, table 5
-(8, 20, 'Fresh Lime Soda', 1, 80.00, 80.00, 5, 'cash', 'completed');  -- Jwala, same table
-
--- Payment totals that match the completed and pending orders above
-INSERT INTO payment (customer_id, total_amount, method, status) VALUES
-(6, 480.00, 'cash', 'paid'),  -- Covers Hari's order (pending but paid)
-(7, 220.00, 'card', 'paid'),  -- Covers Nirajan's chowmein order
-(8, 330.00, 'cash', 'paid');  -- Covers Jwala's dal bhat + lime soda

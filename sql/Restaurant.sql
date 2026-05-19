@@ -60,7 +60,6 @@ CREATE TABLE orders (
                         order_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, -- auto-generated order line id
                         customer_id INT NOT NULL, -- who placed the order
                         menu_id INT NOT NULL, -- dish ordered (for joins)
-                        menu_name VARCHAR(255) NOT NULL, -- dish name snapshot at order time
                         quantity INT NOT NULL DEFAULT 1, -- units ordered
                         price DECIMAL(10,2) NOT NULL, -- unit price at order time
                         total_amount DECIMAL(10,2) NOT NULL, -- quantity × price for this line
