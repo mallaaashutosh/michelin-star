@@ -1,5 +1,7 @@
-<%@ include file="includes/header.jsp" %>
-<%@ include file="includes/navbar.jsp" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.restaurant.entity.User" %>
+<%@ include file="/includes/header.jsp" %>
+<%@ include file="/includes/navbar.jsp" %>
 <style>
     /* ================= RESERVATION ================= */
 
@@ -261,15 +263,12 @@
         </p>
 
         <div class="reservation-buttons">
-
-            <a href="${pageContext.request.contextPath}/views/customer/menu.jsp" class="btn">
+            <a href="${pageContext.request.contextPath}/menu" class="btn">
                 Explore Menu
             </a>
-
-            <a href="${pageContext.request.contextPath}/login.jsp" class="outline-btn">
+            <a href="${pageContext.request.contextPath}/menu" class="outline-btn">
                 Reserve Now
             </a>
-
         </div>
 
     </div>
@@ -506,4 +505,4 @@
 
 </section>
 
-<%@ include file="includes/footer.jsp" %>
+<%@ include file="/includes/footer.jsp" %>

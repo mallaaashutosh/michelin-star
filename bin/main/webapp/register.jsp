@@ -28,7 +28,7 @@
     <div class="error"><%= request.getAttribute("error") %></div>
     <% } %>
 
-    <form action="<%= request.getContextPath() %>/register" method="post" enctype="multipart/form-data">
+    <form action="<%= request.getContextPath() %>/register" method="post">
         <div class="form-group">
             <label for="name">Full Name</label>
             <input type="text" id="name" name="name" required>
@@ -49,10 +49,7 @@
             <label for="confirmPassword">Confirm Password</label>
             <input type="password" id="confirmPassword" name="confirmPassword" required>
         </div>
-        <div class="form-group">
-            <label for="profileImage">Profile Image</label>
-            <input type="file" id="profileImage" name="profileImage" accept="image/*">
-        </div>
+
         <button type="submit" class="btn">Register</button>
     </form>
 

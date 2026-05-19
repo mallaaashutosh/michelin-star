@@ -148,6 +148,21 @@
             transition:0.3s;
         }
 
+        .password-wrapper { position: relative; width: 100%; }
+        .password-wrapper .password-toggle {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            color: #777;
+            user-select: none;
+            transition: color 0.3s;
+        }
+        .password-wrapper .password-toggle:hover { color: #333; }
+        .password-wrapper input[type="password"] { padding-right: 52px; }
+
         .input-group input:focus{
             border:1px solid #b58b65;
             background:white;
@@ -281,7 +296,62 @@
             }
         }
 
+        .validation-error {
+            color: #d9534f;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .validation-error.show {
+            display: block;
+        }
     </style>
+    <script>
+        function validateEmail(email) {
+            const emailPattern = /^[A-Za-z0-9+_.-]+@(.+)$/;
+            return emailPattern.test(email);
+        }
+
+        function validateLoginForm(event) {
+            const email = document.getElementById('email').value.trim();
+            const emailError = document.getElementById('emailError');
+
+            let isValid = true;
+
+            if (!validateEmail(email)) {
+                emailError.innerText = "Please enter a valid email address (e.g., user@example.com)";
+                emailError.classList.add('show');
+                isValid = false;
+            } else {
+                emailError.classList.remove('show');
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.querySelector('form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', validateLoginForm);
+            }
+
+            const emailInput = document.getElementById('email');
+            if (emailInput) {
+                emailInput.addEventListener('blur', function() {
+                    const emailError = document.getElementById('emailError');
+                    if (!validateEmail(this.value.trim())) {
+                        emailError.innerText = "Please enter a valid email address";
+                        emailError.classList.add('show');
+                    } else {
+                        emailError.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 <body>
 <%
@@ -370,16 +440,22 @@
                            placeholder="Enter your email" id="email" name="email"
                            value="<%= !rememberedEmail.isEmpty() ? rememberedEmail : (request.getAttribute("email") != null ? request.getAttribute("email") : "") %>" required>
 
+                    <div id="emailError" class="validation-error"></div>
+
                 </div>
 
                 <div class="input-group">
 
                     <label>Password</label>
 
-                    <input type="password"
-                           name="password"
-                           placeholder="Enter your password"
-                           required>
+                    <div class="password-wrapper">
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               placeholder="Enter your password"
+                               required>
+                        <span id="passwordToggle" class="password-toggle">👁️‍🗨️</span>
+                    </div>
 
                 </div>
 
