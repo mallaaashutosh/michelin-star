@@ -25,6 +25,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard - Michelin Star</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -156,23 +159,23 @@
 
 <script>
 (function() {
-    var goldSolid = '#d6be38';
-    var palette = ['#d6be38', '#a89430', '#6b6b6b', '#2ecc71', '#3498db', '#9b59b6', '#e67e22'];
+    var accent = '#b58b65';
+    var palette = ['#b58b65', '#8c6c4d', '#7b5e45', '#c4a882', '#27ae60', '#5d8aa8', '#9b7bb8'];
 
     var commonOptions = {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: { labels: { color: '#9a9a9a', font: { family: 'Segoe UI' } } }
+            legend: { labels: { color: '#7a7a7a', font: { family: 'Inter' } } }
         },
         scales: {
             x: {
-                ticks: { color: '#9a9a9a' },
-                grid: { color: 'rgba(255,255,255,0.06)' }
+                ticks: { color: '#7a7a7a' },
+                grid: { color: 'rgba(0,0,0,0.06)' }
             },
             y: {
-                ticks: { color: '#9a9a9a' },
-                grid: { color: 'rgba(255,255,255,0.06)' },
+                ticks: { color: '#7a7a7a' },
+                grid: { color: 'rgba(0,0,0,0.06)' },
                 beginAtZero: true
             }
         }
@@ -186,8 +189,8 @@
             datasets: [{
                 label: 'Order lines',
                 data: orders7.values,
-                backgroundColor: 'rgba(214, 190, 56, 0.45)',
-                borderColor: goldSolid,
+                backgroundColor: 'rgba(181, 139, 101, 0.45)',
+                borderColor: accent,
                 borderWidth: 1
             }]
         },
@@ -211,7 +214,7 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { position: 'bottom', labels: { color: '#9a9a9a', padding: 14 } }
+                legend: { position: 'bottom', labels: { color: '#7a7a7a', padding: 14 } }
             }
         }
     });
@@ -231,7 +234,7 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { position: 'bottom', labels: { color: '#9a9a9a', padding: 14 } }
+                legend: { position: 'bottom', labels: { color: '#7a7a7a', padding: 14 } }
             }
         }
     });
@@ -244,8 +247,8 @@
             datasets: [{
                 label: 'Revenue',
                 data: topItems.values,
-                backgroundColor: 'rgba(214, 190, 56, 0.35)',
-                borderColor: goldSolid,
+                backgroundColor: 'rgba(181, 139, 101, 0.35)',
+                borderColor: accent,
                 borderWidth: 1
             }]
         },
@@ -266,13 +269,13 @@
             },
             scales: {
                 x: {
-                    ticks: { color: '#9a9a9a' },
-                    grid: { color: 'rgba(255,255,255,0.06)' },
+                    ticks: { color: '#7a7a7a' },
+                    grid: { color: 'rgba(0,0,0,0.06)' },
                     beginAtZero: true
                 },
                 y: {
-                    ticks: { color: '#9a9a9a' },
-                    grid: { color: 'rgba(255,255,255,0.06)' }
+                    ticks: { color: '#7a7a7a' },
+                    grid: { color: 'rgba(0,0,0,0.06)' }
                 }
             }
         }
@@ -288,9 +291,9 @@
                 data: cat.values,
                 backgroundColor: cat.labels.map(function(_, i) {
                     var a = 0.35 + (i % 6) * 0.1;
-                    return 'rgba(214, 190, 56, ' + a + ')';
+                    return 'rgba(181, 139, 101, ' + a + ')';
                 }),
-                borderColor: goldSolid,
+                borderColor: accent,
                 borderWidth: 1
             }]
         },

@@ -13,7 +13,6 @@
         <a href="<%= navCtx %>/">Home</a>
         <a href="<%= navCtx %>/menu">Menu</a>
         <a href="<%= navCtx %>/">About</a>
-        <a href="<%= navCtx %>/login">Reservation</a>
         <a href="<%= navCtx %>/">Gallery</a>
         <a href="<%= navCtx %>/">Contact</a>
     </div>
@@ -29,7 +28,7 @@
     </div>
     <% } else { %>
     <a href="<%= navCtx %>/login" class="btn">
-        Book Table
+        Sign In
     </a>
     <% } %>
 

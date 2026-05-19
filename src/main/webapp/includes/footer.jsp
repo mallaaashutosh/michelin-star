@@ -42,7 +42,6 @@
 
             <a href="#">Home</a>
             <a href="#">Menu</a>
-            <a href="#">Reservation</a>
             <a href="#">Gallery</a>
 
         </div>

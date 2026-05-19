@@ -3,9 +3,9 @@
 <%@ include file="/includes/header.jsp" %>
 <%@ include file="/includes/navbar.jsp" %>
 <style>
-    /* ================= RESERVATION ================= */
+    /* ================= HERO ================= */
 
-    .reservation{
+    .hero{
         min-height:100vh;
 
         display:grid;
@@ -17,7 +17,7 @@
         gap:60px;
     }
 
-    .reservation-text h1{
+    .hero-text h1{
         font-size:88px;
         line-height:1;
         font-family:'Cormorant Garamond',serif;
@@ -25,7 +25,7 @@
         color:#2d2d2d;
     }
 
-    .reservation-text p{
+    .hero-text p{
         font-size:18px;
         line-height:1.9;
         color:#6d6d6d;
@@ -33,26 +33,13 @@
         max-width:600px;
     }
 
-    .reservation-buttons{
+    .hero-buttons{
         display:flex;
         gap:20px;
         flex-wrap:wrap;
     }
 
-    .outline-btn{
-        padding:14px 28px;
-        border:1px solid #b58b65;
-        border-radius:40px;
-        color:#b58b65;
-        transition:0.3s;
-    }
-
-    .outline-btn:hover{
-        background:#b58b65;
-        color:white;
-    }
-
-    .reservation-image img{
+    .hero-image img{
         width:100%;
         border-radius:30px;
         object-fit:cover;
@@ -218,37 +205,10 @@
         color:#b58b65;
     }
 
-    /* ================= RESERVATION BANNER ================= */
-
-    .reservation-banner{
-        background:#b58b65;
-        padding:90px 8%;
-        text-align:center;
-        color:white;
-        border-radius:40px;
-    }
-
-    .reservation-banner h2{
-        font-size:60px;
-        font-family:'Cormorant Garamond',serif;
-        margin-bottom:20px;
-    }
-
-    .reservation-banner p{
-        max-width:700px;
-        margin:auto;
-        line-height:1.8;
-        margin-bottom:35px;
-    }
-
-    .reservation-banner .btn{
-        background:white;
-        color:#b58b65;
-    }
 </style>
-<section class="reservation">
+<section class="hero">
 
-    <div class="reservation-text">
+    <div class="hero-text">
 
         <h1>
             Elegant Dining <br>
@@ -262,20 +222,17 @@
             and timeless Himalayan elegance.
         </p>
 
-        <div class="reservation-buttons">
+        <div class="hero-buttons">
             <a href="${pageContext.request.contextPath}/menu" class="btn">
                 Explore Menu
-            </a>
-            <a href="${pageContext.request.contextPath}/menu" class="outline-btn">
-                Reserve Now
             </a>
         </div>
 
     </div>
 
-    <div class="reservation-image">
+    <div class="hero-image">
 
-        <img src="https://nepalhouse.com.np/uploads/contents/nepal-house-about.jpg" alt="reservation-image">
+        <img src="https://nepalhouse.com.np/uploads/contents/nepal-house-about.jpg" alt="Michelin-Star dining">
 
     </div>
 
@@ -477,29 +434,6 @@
             <h4>— Sophia Clark</h4>
 
         </div>
-
-    </div>
-
-</section>
-
-<!-- ================= RESERVATION ================= -->
-
-<section class="section">
-
-    <div class="reservation-banner">
-
-        <h2>
-            Reserve Your Table Today
-        </h2>
-
-        <p>
-            Experience unforgettable dining moments with premium cuisine,
-            exceptional hospitality, and elegant atmosphere.
-        </p>
-
-        <a href="#" class="btn">
-            Make Reservation
-        </a>
 
     </div>
 
