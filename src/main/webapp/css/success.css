@@ -1,55 +1,57 @@
+/* File: success.css - Styles for the order confirmation success page. Centers a thank-you card with checkmark, order summary, and next-step buttons. Uses a clean light layout so customers clearly see their order went through. */
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 20px;
+    font-family: Arial, sans-serif; /* Simple readable font for confirmation */
+    background-color: #f5f5f5; /* Light gray page background */
+    margin: 0; /* Remove default body margin */
+    padding: 20px; /* Page edge padding */
 }
 
 .success-container {
-    max-width: 500px;
-    margin: 80px auto;
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    text-align: center;
+    max-width: 500px; /* Narrow centered confirmation card */
+    margin: 80px auto; /* Center card with top offset below header area */
+    background: white; /* White success card surface */
+    padding: 40px; /* Generous inner padding */
+    border-radius: 10px; /* Rounded confirmation card */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Soft elevation shadow */
+    text-align: center; /* Center icon, title, and buttons */
 }
 
 .checkmark {
-    font-size: 80px;
-    color: green;
+    font-size: 80px; /* Large success checkmark icon */
+    color: green; /* Green for positive confirmation */
 }
 
 h1 {
-    color: green;
+    color: green; /* Green heading reinforces success */
 }
 
 .order-details {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 20px 0;
-    text-align: left;
+    background: #f8f9fa; /* Light panel behind order summary */
+    padding: 15px; /* Padding inside summary box */
+    border-radius: 8px; /* Rounded summary panel */
+    margin: 20px 0; /* Vertical spacing around details */
+    text-align: left; /* Left-align detail lines for readability */
 }
 
 .buttons {
-    margin-top: 20px;
+    margin-top: 20px; /* Space above action buttons */
 }
 
 .btn {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: #e67e22;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin: 5px;
+    display: inline-block; /* Button-style links side by side */
+    padding: 12px 24px; /* Comfortable button padding */
+    background-color: #e67e22; /* Primary orange action */
+    color: white; /* White button text */
+    text-decoration: none; /* No underline on button links */
+    border-radius: 5px; /* Slightly rounded buttons */
+    margin: 5px; /* Small gap between multiple buttons */
 }
 
 .btn-order {
-    background-color: #6c757d;
+    background-color: #6c757d; /* Gray secondary button variant */
 }
 
 .btn:hover {
-    background-color: #d35400;
+    background-color: #d35400; /* Darker orange on hover */
 }

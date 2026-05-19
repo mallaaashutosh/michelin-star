@@ -1,11 +1,15 @@
-package com.restaurant.dao;
+/*
+ * Full menu catalog operations: add, list, find, update, delete, filter by category, and search by name.
+ * The concrete JDBC logic lives in the implementation class referenced below.
+ */
+package com.restaurant.dao; // menu item persistence contracts
 
-import com.restaurant.entity.MenuItem;
-import java.util.ArrayList;
+import com.restaurant.entity.MenuItem; // one row from the menu table
+import java.util.ArrayList; // ordered lists of items returned to servlets and JSPs
 
 // This interface lists all the operations I can do with menu items
 // The actual code will be written in MenuDaoImpl.java
-public interface MenuDAO {
+public interface MenuDAO { // implemented by MenuDaoImpl
 
     // Add a new food item to database
     boolean insertMenuItem(MenuItem menuItem);

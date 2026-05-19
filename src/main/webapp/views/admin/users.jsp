@@ -1,3 +1,7 @@
+<%--
+  Admin user management page — list accounts and approve or suspend customers.
+  Served by admin user servlet; expects "users" list and optional "error" on the request.
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <% request.setAttribute("currentPage", "users"); %>
@@ -29,48 +33,48 @@
             <h3>All Users</h3>
             <table class="admin-table">
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="u" items="${users}">
-                        <tr>
-                            <td>${u.id}</td>
-                            <td>${u.name}</td>
-                            <td>${u.email}</td>
-                            <td>${u.phoneNumber}</td>
-                            <td><span class="badge badge-${u.role}">${u.role}</span></td>
-                            <td><span class="badge badge-${u.status}">${u.status}</span></td>
-                            <td class="table-actions">
-                                <c:if test="${u.role == 'customer' && u.status == 'pending'}">
-                                    <form action="${pageContext.request.contextPath}/admin/users" method="post" style="display:inline;">
-                                        <input type="hidden" name="action" value="updateStatus">
-                                        <input type="hidden" name="userId" value="${u.id}">
-                                        <input type="hidden" name="status" value="active">
-                                        <button type="submit" class="btn-admin btn-admin-sm">Approve</button>
-                                    </form>
-                                </c:if>
-                                <c:if test="${u.role == 'customer' && u.status == 'active'}">
-                                    <form action="${pageContext.request.contextPath}/admin/users" method="post" style="display:inline;">
-                                        <input type="hidden" name="action" value="updateStatus">
-                                        <input type="hidden" name="userId" value="${u.id}">
-                                        <input type="hidden" name="status" value="pending">
-                                        <button type="submit" class="btn-admin btn-admin-sm btn-admin-outline">Suspend</button>
-                                    </form>
-                                </c:if>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    <c:if test="${empty users}">
-                        <tr><td colspan="7" style="color: var(--admin-muted);">No users found.</td></tr>
-                    </c:if>
+                <c:forEach var="u" items="${users}">
+                    <tr>
+                        <td>${u.id}</td>
+                        <td>${u.name}</td>
+                        <td>${u.email}</td>
+                        <td>${u.phoneNumber}</td>
+                        <td><span class="badge badge-${u.role}">${u.role}</span></td>
+                        <td><span class="badge badge-${u.status}">${u.status}</span></td>
+                        <td class="table-actions">
+                            <c:if test="${u.role == 'customer' && u.status == 'pending'}"> <!-- Approve: pending → active -->
+                                <form action="${pageContext.request.contextPath}/admin/users" method="post" style="display:inline;">
+                                    <input type="hidden" name="action" value="updateStatus">
+                                    <input type="hidden" name="userId" value="${u.id}">
+                                    <input type="hidden" name="status" value="active">
+                                    <button type="submit" class="btn-admin btn-admin-sm">Approve</button>
+                                </form>
+                            </c:if>
+                            <c:if test="${u.role == 'customer' && u.status == 'active'}"> <!-- Suspend: active → pending -->
+                                <form action="${pageContext.request.contextPath}/admin/users" method="post" style="display:inline;">
+                                    <input type="hidden" name="action" value="updateStatus">
+                                    <input type="hidden" name="userId" value="${u.id}">
+                                    <input type="hidden" name="status" value="pending">
+                                    <button type="submit" class="btn-admin btn-admin-sm btn-admin-outline">Suspend</button>
+                                </form>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+                <c:if test="${empty users}">
+                    <tr><td colspan="7" style="color: var(--admin-muted);">No users found.</td></tr>
+                </c:if>
                 </tbody>
             </table>
         </div>

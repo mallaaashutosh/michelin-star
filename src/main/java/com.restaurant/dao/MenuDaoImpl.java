@@ -1,22 +1,28 @@
-package com.restaurant.dao;
+/**
+ * MenuDaoImpl.java
+ *
+ * JDBC implementation of MenuDAO — CRUD and search operations for rows in the
+ * menu table (dishes shown to customers and managed by admins).
+ */
+package com.restaurant.dao; // DAO package for database access classes
 
 
 import com.restaurant.entity.MenuItem;// Import the MenuItem class (the blueprint for food items)
 import com.restaurant.utils.DBConnection;// Import database connection helper
 import java.sql.Connection;// Import classes for database work
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.PreparedStatement; // Reusable INSERT/UPDATE/SELECT with bound parameters
+import java.sql.ResultSet; // Rows returned from SELECT queries
+import java.sql.SQLException; // Checked exception on SQL or connection errors
+import java.util.ArrayList; // List of MenuItem for browse and search results
 
 // This class does all the database work for menu items
-public class MenuDaoImpl implements MenuDAO {
+public class MenuDaoImpl implements MenuDAO { // Concrete DAO used by menu servlets
 
     // ============================================================
     // ADD NEW FOOD ITEM TO DATABASE
     // ============================================================
-    @Override
-    public boolean insertMenuItem(MenuItem menuItem) {
+    @Override // Fulfills MenuDAO contract
+    public boolean insertMenuItem(MenuItem menuItem) { // Admin adds a new dish
         // SQL query with ? placeholders for values we will fill later
         String query = "INSERT INTO menu (name, category, price, image, availability) VALUES (?, ?, ?, ?, ?)";
 
@@ -45,8 +51,8 @@ public class MenuDaoImpl implements MenuDAO {
     // ============================================================
     // GET ALL FOOD ITEMS FROM DATABASE
     // ============================================================
-    @Override
-    public ArrayList<MenuItem> fetchAllMenuItems() {
+    @Override // Fulfills MenuDAO contract
+    public ArrayList<MenuItem> fetchAllMenuItems() { // Full menu for customer browse page
         // Create empty list to store all menu items
         ArrayList<MenuItem> menuItems = new ArrayList<>();
         // SQL query to get everything from menu table
@@ -82,8 +88,8 @@ public class MenuDaoImpl implements MenuDAO {
     // ============================================================
     // FIND ONE FOOD ITEM BY ITS ID
     // ============================================================
-    @Override
-    public MenuItem findMenuItemById(int menuId) {
+    @Override // Fulfills MenuDAO contract
+    public MenuItem findMenuItemById(int menuId) { // Edit form or cart detail lookup
         // SQL query with ? for the menu_id
         String query = "SELECT * FROM menu WHERE menu_id = ?";
 
@@ -119,8 +125,8 @@ public class MenuDaoImpl implements MenuDAO {
     // ============================================================
     // UPDATE EXISTING FOOD ITEM
     // ============================================================
-    @Override
-    public boolean updateMenuItem(MenuItem menuItem) {
+    @Override // Fulfills MenuDAO contract
+    public boolean updateMenuItem(MenuItem menuItem) { // Admin saves changes to an existing dish
         // SQL query to update a row (all columns except menu_id)
         String query = "UPDATE menu SET name = ?, category = ?, price = ?, image = ?, availability = ? WHERE menu_id = ?";
 
@@ -149,8 +155,8 @@ public class MenuDaoImpl implements MenuDAO {
     // ============================================================
     // DELETE FOOD ITEM FROM DATABASE
     // ============================================================
-    @Override
-    public boolean deleteMenuItem(int menuId) {
+    @Override // Fulfills MenuDAO contract
+    public boolean deleteMenuItem(int menuId) { // Admin removes a dish from the menu
         // SQL query to delete a row by its ID
         String query = "DELETE FROM menu WHERE menu_id = ?";
 
@@ -174,8 +180,8 @@ public class MenuDaoImpl implements MenuDAO {
     // ============================================================
     // GET FOOD ITEMS BY CATEGORY (like Nepali, Chinese, Indian)
     // ============================================================
-    @Override
-    public ArrayList<MenuItem> fetchMenuItemsByCategory(String category) {
+    @Override // Fulfills MenuDAO contract
+    public ArrayList<MenuItem> fetchMenuItemsByCategory(String category) { // Filter tabs on menu page
         // Create empty list to store items
         ArrayList<MenuItem> menuItems = new ArrayList<>();
         // SQL query to get items matching a category
@@ -215,8 +221,8 @@ public class MenuDaoImpl implements MenuDAO {
     // ============================================================
     // SEARCH FOOD ITEMS BY NAME
     // ============================================================
-    @Override
-    public ArrayList<MenuItem> searchMenuItemsByName(String keyword) {
+    @Override // Fulfills MenuDAO contract
+    public ArrayList<MenuItem> searchMenuItemsByName(String keyword) { // Customer search box
         // Create empty list to store search results
         ArrayList<MenuItem> menuItems = new ArrayList<>();
         // SQL query with LIKE to find matching names (case insensitive)
@@ -253,4 +259,4 @@ public class MenuDaoImpl implements MenuDAO {
         // Return list of matching items (empty if none found)
         return menuItems;
     }
-}
+} // end MenuDaoImpl

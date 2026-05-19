@@ -1,161 +1,161 @@
-/* payment.css - styling for payment page */
+/* File: payment.css - Styles for the checkout and payment page. Centers a payment card with order summary, table selection, payment method, and pay button. Table buttons use a yellow tile style with clear selected and disabled states. */
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 20px;
+    font-family: Arial, sans-serif; /* Simple font for checkout */
+    background-color: #f5f5f5; /* Light gray page background */
+    margin: 0; /* Remove default body margin */
+    padding: 20px; /* Page padding around payment card */
 }
 
 /* Main container */
 .payment-container {
-    max-width: 550px;
-    margin: 50px auto;
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 550px; /* Narrow focused checkout column */
+    margin: 50px auto; /* Center card vertically with top offset */
+    background: white; /* White payment card */
+    padding: 30px; /* Inner padding for form content */
+    border-radius: 15px; /* Rounded payment panel */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Soft card shadow */
 }
 
 /* Page title */
 h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
+    text-align: center; /* Center checkout heading */
+    color: #333; /* Dark gray title */
+    margin-bottom: 20px; /* Space below title before summary */
 }
 
 /* Order summary box */
 .order-summary {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    margin: 20px 0;
+    background: #f8f9fa; /* Light panel for order recap */
+    padding: 15px; /* Padding inside summary */
+    border-radius: 10px; /* Rounded summary box */
+    margin: 20px 0; /* Vertical spacing around summary */
 }
 
 .order-summary h3 {
-    margin-top: 0;
-    color: #333;
+    margin-top: 0; /* Flush summary heading to top of box */
+    color: #333; /* Dark summary subheading */
 }
 
 .order-summary p {
-    margin: 10px 0;
-    color: #666;
+    margin: 10px 0; /* Spacing between summary lines */
+    color: #666; /* Muted detail text */
 }
 
 /* Total amount styling */
 .total {
-    font-size: 18px;
-    font-weight: bold;
-    color: #e67e22;
-    border-top: 1px solid #ddd;
-    padding-top: 10px;
-    margin-top: 10px;
+    font-size: 18px; /* Larger total line */
+    font-weight: bold; /* Emphasize amount due */
+    color: #e67e22; /* Orange brand color for total */
+    border-top: 1px solid #ddd; /* Divider above total */
+    padding-top: 10px; /* Space above total after divider */
+    margin-top: 10px; /* Margin separating total from items */
 }
 
 /* Form group */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Space between form fields */
 }
 
 /* Label styling */
 label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
+    display: block; /* Stack label above input */
+    margin-bottom: 8px; /* Gap between label and field */
+    font-weight: bold; /* Bold field labels */
+    color: #333; /* Dark label text */
 }
 
 /* Table buttons container */
 .table-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin: 15px 0;
-    justify-content: center;
+    display: flex; /* Flex row of table tiles */
+    flex-wrap: wrap; /* Wrap tiles on narrow screens */
+    gap: 12px; /* Space between table buttons */
+    margin: 15px 0; /* Vertical margin around table picker */
+    justify-content: center; /* Center table grid */
 }
 
 /* Table button styling - Light yellow, rounded square */
 .table-btn {
-    width: 65px;
-    height: 65px;
+    width: 65px; /* Square table tile width */
+    height: 65px; /* Square table tile height */
     background-color: #fff9c4;  /* Light yellow */
-    border: 2px solid #f9e57c;
+    border: 2px solid #f9e57c; /* Yellow border around tile */
     border-radius: 15px;  /* Rounded corners */
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    transition: all 0.3s ease;
+    cursor: pointer; /* Pointer on selectable tables */
+    font-size: 18px; /* Table number text size */
+    font-weight: bold; /* Bold table label */
+    color: #333; /* Dark number on yellow tile */
+    transition: all 0.3s ease; /* Smooth hover and selection animation */
 }
 
 /* Table button hover effect */
 .table-btn:hover {
     background-color: #fff176;  /* Darker yellow on hover */
-    transform: scale(1.05);
-    border-color: #e67e22;
+    transform: scale(1.05); /* Slight grow on hover */
+    border-color: #e67e22; /* Orange border hint on hover */
 }
 
 /* Selected table button */
 .table-btn.active {
-    background-color: #e67e22;
-    color: white;
-    border-color: #e67e22;
-    transform: scale(1.05);
+    background-color: #e67e22; /* Orange fill for chosen table */
+    color: white; /* White text on selected tile */
+    border-color: #e67e22; /* Matching orange border */
+    transform: scale(1.05); /* Keep selected tile slightly enlarged */
 }
 
 /* Selected table display */
 .selected-table {
-    margin-top: 10px;
-    font-size: 16px;
-    text-align: center;
-    font-weight: bold;
-    color: #e67e22;
+    margin-top: 10px; /* Space below table grid */
+    font-size: 16px; /* Readable selected table message */
+    text-align: center; /* Center confirmation text */
+    font-weight: bold; /* Emphasize chosen table */
+    color: #e67e22; /* Orange accent for selection message */
 }
 
 /* Payment dropdown */
 select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    font-size: 16px;
-    font-family: Arial;
+    width: 100%; /* Full-width payment method dropdown */
+    padding: 12px; /* Comfortable select padding */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 10px; /* Rounded select */
+    font-size: 16px; /* Readable option text */
+    font-family: Arial; /* Match page font in select */
 }
 
 /* Pay button */
 .pay-btn {
-    width: 100%;
-    padding: 15px;
-    background-color: #e67e22;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
+    width: 100%; /* Full-width primary pay action */
+    padding: 15px; /* Large tap target */
+    background-color: #e67e22; /* Orange pay button */
+    color: white; /* White pay label */
+    border: none; /* Flat button */
+    border-radius: 10px; /* Rounded pay button */
+    font-size: 18px; /* Prominent pay text */
+    font-weight: bold; /* Bold call to action */
+    cursor: pointer; /* Pointer when enabled */
+    margin-top: 10px; /* Space above pay button */
 }
 
 /* Pay button hover effect */
 .pay-btn:hover {
-    background-color: #d35400;
+    background-color: #d35400; /* Darker orange on hover */
 }
 
 /* Pay button disabled state */
 .pay-btn:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+    background-color: #cccccc; /* Gray when payment not allowed */
+    cursor: not-allowed; /* Show blocked cursor */
 }
 
 /* Back link */
 .back-link {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-    color: #666;
-    text-decoration: none;
+    display: block; /* Full-width back link row */
+    text-align: center; /* Center back navigation */
+    margin-top: 20px; /* Space above back link */
+    color: #666; /* Muted link color */
+    text-decoration: none; /* No underline */
 }
 
 .back-link:hover {
-    color: #333;
+    color: #333; /* Darker on hover */
 }

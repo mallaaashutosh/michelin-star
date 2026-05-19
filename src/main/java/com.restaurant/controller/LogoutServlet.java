@@ -1,21 +1,26 @@
-package com.restaurant.controller;
+/*
+ * LogoutServlet.java
+ * Signs the user out by clearing their session and sending them to the login page.
+ */
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+package com.restaurant.controller; // Controller package for servlet endpoints
 
-import java.io.IOException;
+import jakarta.servlet.ServletException; // Thrown when servlet forwarding fails
+import jakarta.servlet.annotation.WebServlet; // Maps this class to a URL path
+import jakarta.servlet.http.HttpServlet; // Base class for HTTP request handling
+import jakarta.servlet.http.HttpServletRequest; // Incoming request data
+import jakarta.servlet.http.HttpServletResponse; // Outgoing response to the browser
+import jakarta.servlet.http.HttpSession; // Server-side session tied to the user
 
-@WebServlet("/logout")
-public class LogoutServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
+import java.io.IOException; // Thrown on redirect or I/O errors
+
+@WebServlet("/logout") // Handles GET requests to /logout
+public class LogoutServlet extends HttpServlet { // Servlet that ends the user's session
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { // Runs when user visits logout
+        HttpSession session = request.getSession(false); // Reuse existing session only; do not create a new one
+        if (session != null) { // Only invalidate if the user was actually logged in
+            session.invalidate(); // Clear all session data so they are fully signed out
         }
-        response.sendRedirect(request.getContextPath() + "/login");
+        response.sendRedirect(request.getContextPath() + "/login"); // Send them back to the login screen
     }
 }

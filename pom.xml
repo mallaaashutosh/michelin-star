@@ -1,94 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  pom.xml — Maven build configuration for the Michelin Star restaurant WAR.
+  Declares Java 25, MySQL + Jakarta Servlet/JSP/JSTL + BCrypt dependencies,
+  and Cargo plugin to run Tomcat 10 locally on port 9090 at context /restaurant.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion> <!-- Maven POM model version -->
 
-    <groupId>com.michelin-star</groupId>
-    <artifactId>michelin-star</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <groupId>com.michelin-star</groupId> <!-- Maven coordinates: organization -->
+    <artifactId>michelin-star</artifactId> <!-- Maven coordinates: project name -->
+    <version>1.0-SNAPSHOT</version> <!-- Development snapshot version -->
+    <packaging>war</packaging> <!-- Build output is a web application archive -->
 
-    <properties>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <cargo.servlet.port>9090</cargo.servlet.port>
+    <properties> <!-- Shared build properties -->
+        <maven.compiler.source>25</maven.compiler.source> <!-- Compile with Java 25 -->
+        <maven.compiler.target>25</maven.compiler.target> <!-- Target bytecode Java 25 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- Source file encoding -->
+        <cargo.servlet.port>9090</cargo.servlet.port> <!-- Local Tomcat HTTP port via Cargo -->
     </properties>
 
-    <dependencies>
-        <dependency>
+    <dependencies> <!-- Runtime and compile-time libraries -->
+        <dependency> <!-- MySQL JDBC driver for database access -->
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>9.2.0</version>
         </dependency>
 
-        <dependency>
+        <dependency> <!-- Jakarta Servlet API (provided by Tomcat at runtime) -->
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <version>6.1.0</version>
-            <scope>provided</scope>
+            <scope>provided</scope> <!-- Container supplies this JAR -->
         </dependency>
 
-        <dependency>
+        <dependency> <!-- JSP API for view pages -->
             <groupId>jakarta.servlet.jsp</groupId>
             <artifactId>jakarta.servlet.jsp-api</artifactId>
             <version>4.0.0</version>
-            <scope>provided</scope>
+            <scope>provided</scope> <!-- Provided by Tomcat -->
         </dependency>
 
-        <dependency>
+        <dependency> <!-- JSTL tag library API -->
             <groupId>jakarta.servlet.jsp.jstl</groupId>
             <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
             <version>3.0.2</version>
         </dependency>
 
-        <dependency>
+        <dependency> <!-- JSTL implementation for GlassFish / Tomcat -->
             <groupId>org.glassfish.web</groupId>
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
             <version>3.0.1</version>
         </dependency>
 
-        <dependency>
+        <dependency> <!-- BCrypt for hashing user passwords -->
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
+    <build> <!-- Build plugins and packaging settings -->
+        <plugins> <!-- List of Maven plugins -->
+            <plugin> <!-- Packages the project as a WAR file -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
             </plugin>
 
-            <plugin>
+            <plugin> <!-- Cargo: download Tomcat and deploy the app -->
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven3-plugin</artifactId>
                 <version>1.10.15</version>
-                <configuration>
-                    <container>
-                        <containerId>tomcat10x</containerId>
-                        <zipUrlInstaller>
+                <configuration> <!-- Cargo runtime settings -->
+                    <container> <!-- Servlet container definition -->
+                        <containerId>tomcat10x</containerId> <!-- Use Tomcat 10.x -->
+                        <zipUrlInstaller> <!-- Download Tomcat from Apache archive -->
                             <url>https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.34/bin/apache-tomcat-10.1.34.zip</url>
                             <downloadDir>${project.build.directory}/downloads</downloadDir>
                             <extractDir>${project.build.directory}/extracts</extractDir>
                         </zipUrlInstaller>
                     </container>
-                    <configuration>
+                    <configuration> <!-- Container-specific properties -->
                         <properties>
                             <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
                         </properties>
                     </configuration>
-                    <deployables>
+                    <deployables> <!-- WAR to deploy into Tomcat -->
                         <deployable>
                             <groupId>${project.groupId}</groupId>
                             <artifactId>${project.artifactId}</artifactId>
                             <type>war</type>
                             <properties>
-                                <context>/restaurant</context>
+                                <context>/restaurant</context> <!-- App URL: localhost:9090/restaurant -->
                             </properties>
                         </deployable>
                     </deployables>

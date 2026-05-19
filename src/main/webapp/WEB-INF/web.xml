@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Servlet mappings, filters, and listeners may be declared here or via annotations -->
+<!-- Root web-app element (Jakarta EE 6) -->
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
 
+<!-- No extra servlets in XML yet — app uses @WebServlet and similar annotations -->
 </web-app>
-

@@ -1,9 +1,13 @@
+<%--
+  Admin menu management page — add, edit, and delete restaurant menu items.
+  Servlet supplies menuItems; optional editItem when editing an existing row.
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%
     request.setAttribute("currentPage", "menu");
     com.restaurant.entity.MenuItem editItem = (com.restaurant.entity.MenuItem) request.getAttribute("editItem");
-    boolean editing = editItem != null;
+    boolean editing = editItem != null; // True when servlet has set an item to edit
 %>
 <!DOCTYPE html>
 <html>
@@ -25,7 +29,7 @@
             <p>Add, edit, or remove items from the restaurant menu.</p>
         </header>
 
-        <div class="admin-panel">
+        <div class="admin-panel"> <!-- Add / edit form — title and submit label change based on editing flag -->
             <h3><%= editing ? "Edit Item" : "Add New Item" %></h3>
             <form class="admin-form" action="${pageContext.request.contextPath}/admin/menu" method="post">
                 <input type="hidden" name="action" value="<%= editing ? "edit" : "add" %>">
@@ -63,48 +67,48 @@
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn-admin"><%= editing ? "Update" : "Add Item" %></button>
-                    <% if (editing) { %>
+                    <% if (editing) { %> <!-- Cancel returns to clean add-item state -->
                     <a href="${pageContext.request.contextPath}/admin/menu" class="btn-admin btn-admin-outline" style="margin-left:0.5rem;">Cancel</a>
                     <% } %>
                 </div>
             </form>
         </div>
 
-        <div class="admin-panel">
+        <div class="admin-panel"> <!-- Full menu item listing with edit/delete actions -->
             <h3>All Menu Items</h3>
             <table class="admin-table">
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="item" items="${menuItems}">
-                        <tr>
-                            <td>${item.menuId}</td>
-                            <td>${item.name}</td>
-                            <td>${item.category}</td>
-                            <td>Rs. ${item.price}</td>
-                            <td>
-                                <span class="badge badge-${item.availability}">${item.availability}</span>
-                            </td>
-                            <td class="table-actions">
-                                <a href="${pageContext.request.contextPath}/admin/menu?action=edit&id=${item.menuId}"
-                                   class="btn-admin btn-admin-sm btn-admin-outline">Edit</a>
-                                <a href="${pageContext.request.contextPath}/admin/menu?action=delete&id=${item.menuId}"
-                                   class="btn-admin btn-admin-sm btn-admin-danger"
-                                   onclick="return confirm('Delete this menu item?');">Delete</a>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    <c:if test="${empty menuItems}">
-                        <tr><td colspan="6" style="color: var(--admin-muted);">No menu items yet.</td></tr>
-                    </c:if>
+                <c:forEach var="item" items="${menuItems}">
+                    <tr>
+                        <td>${item.menuId}</td>
+                        <td>${item.name}</td>
+                        <td>${item.category}</td>
+                        <td>Rs. ${item.price}</td>
+                        <td>
+                            <span class="badge badge-${item.availability}">${item.availability}</span>
+                        </td>
+                        <td class="table-actions">
+                            <a href="${pageContext.request.contextPath}/admin/menu?action=edit&id=${item.menuId}"
+                               class="btn-admin btn-admin-sm btn-admin-outline">Edit</a>
+                            <a href="${pageContext.request.contextPath}/admin/menu?action=delete&id=${item.menuId}"
+                               class="btn-admin btn-admin-sm btn-admin-danger"
+                               onclick="return confirm('Delete this menu item?');">Delete</a>
+                        </td>
+                    </tr>
+                </c:forEach>
+                <c:if test="${empty menuItems}">
+                    <tr><td colspan="6" style="color: var(--admin-muted);">No menu items yet.</td></tr>
+                </c:if>
                 </tbody>
             </table>
         </div>

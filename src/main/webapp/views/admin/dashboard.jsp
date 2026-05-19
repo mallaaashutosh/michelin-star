@@ -1,3 +1,7 @@
+<%--
+  Admin dashboard — KPIs, charts, insights, and quick links for operators.
+  DashboardServlet provides stats, analytics, and insights on the request.
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
@@ -8,7 +12,7 @@
     Map<String, Integer> stats = (Map<String, Integer>) request.getAttribute("stats");
     if (stats == null) stats = java.util.Collections.emptyMap();
     DashboardAnalytics analytics = (DashboardAnalytics) request.getAttribute("analytics");
-    if (analytics == null) {
+    if (analytics == null) { // Fallback to empty analytics if servlet didn't populate
         analytics = new DashboardAnalytics(stats, 0, 0, 0,
                 com.restaurant.dto.ChartSeries.empty(),
                 com.restaurant.dto.ChartSeries.empty(),
@@ -45,7 +49,7 @@
         <div class="alert-error"><%= request.getAttribute("error") %></div>
         <% } %>
 
-        <section class="kpi-strip" aria-label="Financial KPIs">
+        <section class="kpi-strip" aria-label="Financial KPIs"> <!-- Revenue and order line summary cards -->
             <div class="kpi-card kpi-primary">
                 <div class="kpi-label">Total revenue (completed)</div>
                 <div class="kpi-value"><%= String.format("%,.2f", analytics.getTotalRevenue()) %></div>
@@ -68,7 +72,7 @@
             </div>
         </section>
 
-        <div class="stats-grid">
+        <div class="stats-grid"> <!-- Secondary stat cards: menu, users, orders -->
             <div class="stat-card">
                 <div class="stat-icon">&#9733;</div>
                 <div class="stat-label">Menu Items</div>
@@ -96,7 +100,7 @@
             </div>
         </div>
 
-        <% if (!insights.isEmpty()) { %>
+        <% if (!insights.isEmpty()) { %> <!-- AI/computed signals panel, hidden when empty -->
         <section class="insights-panel admin-panel" aria-label="Analysis">
             <h3>Analysis &amp; signals</h3>
             <ul class="insights-list">
@@ -107,7 +111,7 @@
         </section>
         <% } %>
 
-        <div class="chart-grid">
+        <div class="chart-grid"> <!-- 2x2 chart grid: activity, status, payment, top dishes -->
             <div class="chart-card admin-panel">
                 <h3>Order activity (last 7 days)</h3>
                 <p class="chart-sub">Number of order lines recorded per day</p>
@@ -138,7 +142,7 @@
             </div>
         </div>
 
-        <div class="chart-card admin-panel chart-wide">
+        <div class="chart-card admin-panel chart-wide"> <!-- Full-width category revenue bar chart -->
             <h3>Sales by menu category</h3>
             <p class="chart-sub">Revenue attributed to each category (all order lines)</p>
             <div class="chart-wrap chart-wrap-tall">
@@ -146,7 +150,7 @@
             </div>
         </div>
 
-        <div class="admin-panel">
+        <div class="admin-panel"> <!-- Quick links to common admin actions -->
             <h3>Quick Actions</h3>
             <div class="quick-actions">
                 <a href="${pageContext.request.contextPath}/admin/menu" class="btn-admin">Manage Menu</a>
@@ -158,160 +162,140 @@
 </div>
 
 <script>
-(function() {
-    var accent = '#b58b65';
-    var palette = ['#b58b65', '#8c6c4d', '#7b5e45', '#c4a882', '#27ae60', '#5d8aa8', '#9b7bb8'];
+    (function() {
+        var accent  = '#b58b65';
+        var palette = ['#b58b65', '#8c6c4d', '#7b5e45', '#c4a882', '#27ae60', '#5d8aa8', '#9b7bb8'];
 
-    var commonOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: { labels: { color: '#7a7a7a', font: { family: 'Inter' } } }
-        },
-        scales: {
-            x: {
-                ticks: { color: '#7a7a7a' },
-                grid: { color: 'rgba(0,0,0,0.06)' }
-            },
-            y: {
-                ticks: { color: '#7a7a7a' },
-                grid: { color: 'rgba(0,0,0,0.06)' },
-                beginAtZero: true
-            }
-        }
-    };
-
-    var orders7 = <%= ChartJsonUtil.toJsonObject(analytics.getOrdersLast7Days()) %>;
-    new Chart(document.getElementById('chartOrders7'), {
-        type: 'bar',
-        data: {
-            labels: orders7.labels,
-            datasets: [{
-                label: 'Order lines',
-                data: orders7.values,
-                backgroundColor: 'rgba(181, 139, 101, 0.45)',
-                borderColor: accent,
-                borderWidth: 1
-            }]
-        },
-        options: Object.assign({}, commonOptions, {
-            plugins: { legend: { display: false } }
-        })
-    });
-
-    var statusMix = <%= ChartJsonUtil.toJsonObject(analytics.getOrderStatusMix()) %>;
-    new Chart(document.getElementById('chartStatus'), {
-        type: 'doughnut',
-        data: {
-            labels: statusMix.labels,
-            datasets: [{
-                data: statusMix.values,
-                backgroundColor: palette,
-                borderWidth: 0
-            }]
-        },
-        options: {
+        // Shared defaults for bar charts (axes, grid, legend font)
+        var commonOptions = {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { position: 'bottom', labels: { color: '#7a7a7a', padding: 14 } }
-            }
-        }
-    });
-
-    var payMix = <%= ChartJsonUtil.toJsonObject(analytics.getPaymentMethods()) %>;
-    new Chart(document.getElementById('chartPay'), {
-        type: 'doughnut',
-        data: {
-            labels: payMix.labels,
-            datasets: [{
-                data: payMix.values,
-                backgroundColor: palette,
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'bottom', labels: { color: '#7a7a7a', padding: 14 } }
-            }
-        }
-    });
-
-    var topItems = <%= ChartJsonUtil.toJsonObject(analytics.getTopMenuItems()) %>;
-    new Chart(document.getElementById('chartTopItems'), {
-        type: 'bar',
-        data: {
-            labels: topItems.labels,
-            datasets: [{
-                label: 'Revenue',
-                data: topItems.values,
-                backgroundColor: 'rgba(181, 139, 101, 0.35)',
-                borderColor: accent,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(ctx) {
-                            var v = ctx.raw;
-                            return ' ' + (typeof v === 'number' ? v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : v);
-                        }
-                    }
-                }
+                legend: { labels: { color: '#7a7a7a', font: { family: 'Inter' } } }
             },
             scales: {
-                x: {
-                    ticks: { color: '#7a7a7a' },
-                    grid: { color: 'rgba(0,0,0,0.06)' },
-                    beginAtZero: true
+                x: { ticks: { color: '#7a7a7a' }, grid: { color: 'rgba(0,0,0,0.06)' } },
+                y: { ticks: { color: '#7a7a7a' }, grid: { color: 'rgba(0,0,0,0.06)' }, beginAtZero: true }
+            }
+        };
+
+        // Orders last 7 days — bar chart
+        var orders7 = <%= ChartJsonUtil.toJsonObject(analytics.getOrdersLast7Days()) %>;
+        new Chart(document.getElementById('chartOrders7'), {
+            type: 'bar',
+            data: {
+                labels: orders7.labels,
+                datasets: [{
+                    label: 'Order lines',
+                    data: orders7.values,
+                    backgroundColor: 'rgba(181, 139, 101, 0.45)',
+                    borderColor: accent,
+                    borderWidth: 1
+                }]
+            },
+            options: Object.assign({}, commonOptions, {
+                plugins: { legend: { display: false } }
+            })
+        });
+
+        // Order status breakdown — doughnut
+        var statusMix = <%= ChartJsonUtil.toJsonObject(analytics.getOrderStatusMix()) %>;
+        new Chart(document.getElementById('chartStatus'), {
+            type: 'doughnut',
+            data: {
+                labels: statusMix.labels,
+                datasets: [{ data: statusMix.values, backgroundColor: palette, borderWidth: 0 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { color: '#7a7a7a', padding: 14 } } }
+            }
+        });
+
+        // Payment method breakdown — doughnut
+        var payMix = <%= ChartJsonUtil.toJsonObject(analytics.getPaymentMethods()) %>;
+        new Chart(document.getElementById('chartPay'), {
+            type: 'doughnut',
+            data: {
+                labels: payMix.labels,
+                datasets: [{ data: payMix.values, backgroundColor: palette, borderWidth: 0 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { color: '#7a7a7a', padding: 14 } } }
+            }
+        });
+
+        // Top 5 menu items by revenue — horizontal bar
+        var topItems = <%= ChartJsonUtil.toJsonObject(analytics.getTopMenuItems()) %>;
+        new Chart(document.getElementById('chartTopItems'), {
+            type: 'bar',
+            data: {
+                labels: topItems.labels,
+                datasets: [{
+                    label: 'Revenue',
+                    data: topItems.values,
+                    backgroundColor: 'rgba(181, 139, 101, 0.35)',
+                    borderColor: accent,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                var v = ctx.raw;
+                                return ' ' + (typeof v === 'number' ? v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : v);
+                            }
+                        }
+                    }
                 },
-                y: {
-                    ticks: { color: '#7a7a7a' },
-                    grid: { color: 'rgba(0,0,0,0.06)' }
+                scales: {
+                    x: { ticks: { color: '#7a7a7a' }, grid: { color: 'rgba(0,0,0,0.06)' }, beginAtZero: true },
+                    y: { ticks: { color: '#7a7a7a' }, grid: { color: 'rgba(0,0,0,0.06)' } }
                 }
             }
-        }
-    });
+        });
 
-    var cat = <%= ChartJsonUtil.toJsonObject(analytics.getSalesByCategory()) %>;
-    new Chart(document.getElementById('chartCategory'), {
-        type: 'bar',
-        data: {
-            labels: cat.labels,
-            datasets: [{
-                label: 'Revenue',
-                data: cat.values,
-                backgroundColor: cat.labels.map(function(_, i) {
-                    var a = 0.35 + (i % 6) * 0.1;
-                    return 'rgba(181, 139, 101, ' + a + ')';
-                }),
-                borderColor: accent,
-                borderWidth: 1
-            }]
-        },
-        options: Object.assign({}, commonOptions, {
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(ctx) {
-                            var v = ctx.raw;
-                            return ' ' + (typeof v === 'number' ? v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : v);
+        // Revenue by menu category — vertical bar, opacity stepped per bar
+        var cat = <%= ChartJsonUtil.toJsonObject(analytics.getSalesByCategory()) %>;
+        new Chart(document.getElementById('chartCategory'), {
+            type: 'bar',
+            data: {
+                labels: cat.labels,
+                datasets: [{
+                    label: 'Revenue',
+                    data: cat.values,
+                    backgroundColor: cat.labels.map(function(_, i) {
+                        var a = 0.35 + (i % 6) * 0.1;
+                        return 'rgba(181, 139, 101, ' + a + ')';
+                    }),
+                    borderColor: accent,
+                    borderWidth: 1
+                }]
+            },
+            options: Object.assign({}, commonOptions, {
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                var v = ctx.raw;
+                                return ' ' + (typeof v === 'number' ? v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : v);
+                            }
                         }
                     }
                 }
-            }
-        })
-    });
-})();
+            })
+        });
+    })();
 </script>
 </body>
 </html>
