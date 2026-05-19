@@ -28,7 +28,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px; /* Give some breathing room on mobile */
+            padding: 40px;
         }
 
         /* The main card container - split screen layout */
@@ -52,7 +52,7 @@
         .login-image img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Don't stretch, just crop nicely */
+            object-fit: cover;
         }
 
         /* Dark gradient overlay so text is readable */
@@ -158,7 +158,7 @@
         }
 
         .password-wrapper input[type="password"] {
-            padding-right: 52px; /* Make room for the eye icon */
+            padding-right: 52px;
         }
 
         .input-group input:focus {
@@ -175,6 +175,11 @@
         .forgot a {
             color: #b58b65;
             font-size: 14px;
+            text-decoration: none;
+        }
+
+        .forgot a:hover {
+            text-decoration: underline;
         }
 
         /* Primary login button */
@@ -193,7 +198,7 @@
 
         .login-btn:hover {
             background: #8c6c4d;
-            transform: translateY(-3px); /* Slight lift effect */
+            transform: translateY(-3px);
         }
 
         /* Register link at the bottom */
@@ -206,6 +211,92 @@
         .register a {
             color: #b58b65;
             font-weight: 600;
+            text-decoration: none;
+        }
+
+        .register a:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= FLASH MESSAGE STYLES ================= */
+        .flash-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: auto;
+            max-width: 90%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .flash-message {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideDown 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .flash-message.info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .flash-message.success {
+            background: #28a745;
+            color: white;
+        }
+
+        .flash-message.error {
+            background: #dc3545;
+            color: white;
+        }
+
+        .flash-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .flash-close:hover {
+            opacity: 1;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* Validation error message styling */
+        .validation-error {
+            color: #d9534f;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .validation-error.show {
+            display: block;
         }
 
         /* ================= RESPONSIVE DESIGN ================= */
@@ -219,7 +310,7 @@
             }
 
             .login-container {
-                flex-direction: column; /* Stack on tablets/phones */
+                flex-direction: column;
             }
 
             .login-image,
@@ -234,18 +325,6 @@
             .login-form {
                 padding: 60px 35px;
             }
-        }
-
-        /* Validation error message styling */
-        .validation-error {
-            color: #d9534f;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .validation-error.show {
-            display: block;
         }
     </style>
 
@@ -270,19 +349,64 @@
             }
 
             if (!isValid) {
-                event.preventDefault(); // Stop the form from submitting
+                event.preventDefault();
+            }
+        }
+
+        // Auto-hide flash messages after 5 seconds
+        function autoHideFlashMessages() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    message.style.transition = 'opacity 0.5s';
+                    setTimeout(function() {
+                        if (message.parentNode) {
+                            message.remove();
+                        }
+                    }, 500);
+                }, 5000);
+            });
+        }
+
+        // Close flash message manually
+        function closeFlashMessage(element) {
+            const message = element.parentElement;
+            message.style.opacity = '0';
+            message.style.transition = 'opacity 0.3s';
+            setTimeout(function() {
+                if (message.parentNode) {
+                    message.remove();
+                }
+            }, 300);
+        }
+
+        // Toggle password visibility
+        function togglePasswordVisibility(inputId, toggleId) {
+            const input = document.getElementById(inputId);
+            const toggle = document.getElementById(toggleId);
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggle.textContent = '👁️';
+            } else {
+                input.type = 'password';
+                toggle.textContent = '👁️‍🗨️';
             }
         }
 
         // Set up event listeners once the page is ready
         document.addEventListener('DOMContentLoaded', function() {
+            // Auto-hide flash messages
+            autoHideFlashMessages();
+
             // Validate on form submit
             const loginForm = document.querySelector('form');
             if (loginForm) {
                 loginForm.addEventListener('submit', validateLoginForm);
             }
 
-            // Validate on blur (when user leaves the email field) - better UX
+            // Validate on blur (when user leaves the email field)
             const emailInput = document.getElementById('email');
             if (emailInput) {
                 emailInput.addEventListener('blur', function() {
@@ -295,22 +419,24 @@
                     }
                 });
             }
+
+            // Password toggle functionality
+            const passwordToggle = document.getElementById('passwordToggle');
+            if (passwordToggle) {
+                passwordToggle.addEventListener('click', function() {
+                    togglePasswordVisibility('password', 'passwordToggle');
+                });
+            }
         });
     </script>
 </head>
 <body>
 
-<%--
-    Server-side logic:
-    - Grab flash messages from session (registration success, auth required)
-    - Look for remember-me cookie to pre-fill email
-    - Consume flash messages so they only appear once
---%>
 <%
     String rememberedEmail = "";
     String flashRegSuccess = (String) session.getAttribute("flashRegisterSuccess");
     if (flashRegSuccess != null) {
-        session.removeAttribute("flashRegisterSuccess"); // Show once then clear
+        session.removeAttribute("flashRegisterSuccess");
     }
 
     String flashAuthRequired = (String) session.getAttribute("flashAuthRequired");
@@ -330,25 +456,38 @@
     }
 %>
 
-<div class="login-container">
-
-    <!-- Display any flash/session messages that came from redirects -->
+<!-- Flash Messages Container - Fixed position at top center -->
+<div class="flash-container">
     <% if (flashAuthRequired != null) { %>
-    <div class="info"><%= flashAuthRequired %></div>
+    <div class="flash-message info">
+        <%= flashAuthRequired %>
+        <button class="flash-close" onclick="closeFlashMessage(this)">✕</button>
+    </div>
     <% } %>
 
     <% if (flashRegSuccess != null) { %>
-    <div class="success"><%= flashRegSuccess %></div>
+    <div class="flash-message success">
+        <%= flashRegSuccess %>
+        <button class="flash-close" onclick="closeFlashMessage(this)">✕</button>
+    </div>
     <% } %>
 
     <% if (request.getAttribute("error") != null) { %>
-    <div class="error"><%= request.getAttribute("error") %></div>
+    <div class="flash-message error">
+        <%= request.getAttribute("error") %>
+        <button class="flash-close" onclick="closeFlashMessage(this)">✕</button>
+    </div>
     <% } %>
 
     <% if (request.getAttribute("success") != null) { %>
-    <div class="success"><%= request.getAttribute("success") %></div>
+    <div class="flash-message success">
+        <%= request.getAttribute("success") %>
+        <button class="flash-close" onclick="closeFlashMessage(this)">✕</button>
+    </div>
     <% } %>
+</div>
 
+<div class="login-container">
     <!-- ================= LEFT COLUMN - RESTAURANT IMAGE ================= -->
     <div class="login-image">
         <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop"
@@ -369,7 +508,7 @@
         <h2>Sign In</h2>
 
         <p>
-            Login to reserve your table and explore our premium dining experience.
+            Login to order your food and explore our premium dining experience.
         </p>
 
         <form action="<%= request.getContextPath() %>/login" method="post">
@@ -398,7 +537,7 @@
             </div>
 
             <div class="forgot">
-                <a href="#">Forgot Password?</a> <!-- TODO: Implement password reset -->
+                <a href="#">Forgot Password?</a>
             </div>
 
             <button type="submit" class="login-btn">
@@ -407,7 +546,7 @@
         </form>
 
         <div class="register">
-            Don’t have an account?
+            Don't have an account?
             <a href="${pageContext.request.contextPath}/register">Register Here</a>
         </div>
     </div>
