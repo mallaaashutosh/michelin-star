@@ -1,20 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+
+<%
+    // If no menu items, go to menu servlet to load them
+    if (request.getAttribute("menuItems") == null) {
+        response.sendRedirect(request.getContextPath() + "/menu");
+        return;
+    }
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Restaurant Menu</title>
-    <!-- Link to CSS file for styling -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/menu.css">
 </head>
 <body>
 
 <div class="container">
 
-    <!-- ========== TOP BAR WITH CART ICON ========== -->
+    <!-- TOP BAR WITH CART ICON -->
     <div class="top-bar">
+        <!-- Back button to go home -->
+        <a href="${pageContext.request.contextPath}/" class="back-btn">← Back to Home</a>
+
         <h1>Our Menu</h1>
+
         <div class="cart-icon">
             <a href="${pageContext.request.contextPath}/cart">
                 🛒 Cart <span id="cartCount">0</span>
@@ -22,8 +34,7 @@
         </div>
     </div>
 
-    <!-- ========== SEARCH FORM ========== -->
-    <!-- Lets customer search food by name -->
+    <!-- SEARCH FORM -->
     <div class="search-box">
         <form action="${pageContext.request.contextPath}/menu" method="get">
             <input type="hidden" name="action" value="search">
@@ -33,8 +44,7 @@
         </form>
     </div>
 
-    <!-- ========== CATEGORY FILTER FORM ========== -->
-    <!-- Lets customer filter food by category (Nepali, Chinese, etc) -->
+    <!-- CATEGORY FILTER FORM -->
     <div class="search-box">
         <form action="${pageContext.request.contextPath}/menu" method="get">
             <input type="hidden" name="action" value="category">
@@ -51,12 +61,11 @@
         </form>
     </div>
 
-    <!-- ========== MENU ITEMS GRID ========== -->
-    <!-- Loop through all menu items from database and display each one -->
+    <!-- MENU ITEMS GRID -->
     <div class="menu-grid">
         <c:forEach var="item" items="${menuItems}">
             <div class="menu-card">
-                <!-- Food image - loaded from ImageServlet -->
+                <!-- Food image -->
                 <c:choose>
                     <c:when test="${not empty item.image}">
                         <img src="${pageContext.request.contextPath}/uploads/${item.image}" alt="${item.name}" class="food-image">
@@ -66,7 +75,7 @@
                     </c:otherwise>
                 </c:choose>
 
-                <!-- Food details (name, category, price, status) -->
+                <!-- Food details -->
                 <div class="menu-info">
                     <h3>${item.name}</h3>
                     <p class="category">${item.category}</p>
@@ -77,7 +86,11 @@
                 <!-- Add to cart button -->
                 <div class="menu-action">
                     <c:if test="${item.availability == 'available'}">
-                        <button class="add-btn" data-id="${item.menuId}" data-name="${item.name}" data-price="${item.price}" onclick="addToCartFromBtn(this)">+</button>
+                        <button class="add-btn"
+                                data-id="${item.menuId}"
+                                data-name="${item.name}"
+                                data-price="${item.price}"
+                                onclick="addToCart(this)">+</button>
                     </c:if>
                     <c:if test="${item.availability != 'available'}">
                         <button class="add-btn disabled" disabled>OUT</button>
@@ -87,19 +100,66 @@
         </c:forEach>
     </div>
 
-    <!-- ========== PLACE ORDER BUTTON ========== -->
-    <!-- Takes customer to cart page to review order -->
-    <div class="order-btn-container">
-        <button class="place-order-btn" onclick="goToCart()">Place Order</button>
-    </div>
 </div>
 
-<!-- Link to JavaScript file for cart functions -->
-<script src="${pageContext.request.contextPath}/javascript/main.js"></script>
+<!-- JavaScript for adding to cart without page refresh -->
 <script>
-function addToCartFromBtn(btn) {
-    addToCart(btn.dataset.id, btn.dataset.name, parseFloat(btn.dataset.price));
-}
+    // Variable to store current cart count
+    let cartItemCount = 0;
+
+    // Function to add item to cart (no page refresh)
+    function addToCart(button) {
+        // Get item details from button attributes
+        let menuId = button.getAttribute("data-id");
+        let name = button.getAttribute("data-name");
+        let price = button.getAttribute("data-price");
+
+        // Create form data to send
+        let formData = new URLSearchParams();
+        formData.append("action", "add");
+        formData.append("menuId", menuId);
+        formData.append("name", name);
+        formData.append("price", price);
+        formData.append("quantity", "1");
+
+        // Send to cart servlet using fetch (page does not refresh)
+        fetch("${pageContext.request.contextPath}/cart", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: formData
+        })
+            .then(function(response) {
+                if (response.ok) {
+                    // Increase cart count
+                    cartItemCount = cartItemCount + 1;
+                    // Update the number shown on cart icon
+                    document.getElementById("cartCount").innerText = cartItemCount;
+                }
+            })
+            .catch(function(error) {
+                console.log("Error:", error);
+            });
+    }
+
+    // Load current cart count when page first loads
+    window.onload = function() {
+        fetch("${pageContext.request.contextPath}/cart?action=count", {
+            method: "GET"
+        })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                cartItemCount = data.count;
+                document.getElementById("cartCount").innerText = cartItemCount;
+            })
+            .catch(function(error) {
+                console.log("Error getting cart count:", error);
+            });
+    }
 </script>
+
 </body>
 </html>

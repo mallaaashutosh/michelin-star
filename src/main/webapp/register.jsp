@@ -13,12 +13,201 @@
         input[type="text"], input[type="email"], input[type="password"], input[type="tel"], input[type="file"] {
             width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;
         }
+        .password-wrapper { position: relative; width: 100%; }
+        .password-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 18px; user-select: none; color: #666; transition: color 0.3s; }
+        .password-toggle:hover { color: #333; }
+        .password-wrapper input[type="password"] { padding-right: 40px; }
+        #password { padding-right: 40px; }
+        #confirmPassword { padding-right: 40px; }
         .btn { width: 100%; padding: 0.75rem; border: none; border-radius: 4px; background: #28a745; color: white; font-size: 1rem; cursor: pointer; transition: background 0.3s; margin-top: 1rem; }
         .btn:hover { background: #218838; }
         .error { color: #d9534f; background: #f2dede; padding: 0.5rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem; text-align: center; }
         .footer { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #777; }
         .footer a { color: #007bff; text-decoration: none; }
+        .validation-error { color: #d9534f; font-size: 12px; margin-top: 5px; display: none; }
+        .validation-error.show { display: block; }
+        .validation-success { color: #28a745; font-size: 12px; margin-top: 5px; display: none; }
+        .validation-success.show { display: block; }
+        .validation-info { color: #666; font-size: 12px; margin-top: 5px; line-height: 1.4; }
+        .requirement { margin: 3px 0; }
+        .requirement.met { color: #28a745; }
+        .requirement.unmet { color: #d9534f; }
     </style>
+    <script>
+        function validateEmail(email) {
+            const emailPattern = /^[A-Za-z0-9+_.-]+@(.+)$/;
+            return emailPattern.test(email);
+        }
+
+        function validatePasswordStrength(password) {
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /\d/.test(password),
+                special: /[@$!%*?&]/.test(password)
+            };
+            return requirements;
+        }
+
+        function updatePasswordRequirements() {
+            const password = document.getElementById('password').value;
+            const requirements = validatePasswordStrength(password);
+
+            const reqLength = document.getElementById('reqLength');
+            const reqUppercase = document.getElementById('reqUppercase');
+            const reqLowercase = document.getElementById('reqLowercase');
+            const reqNumber = document.getElementById('reqNumber');
+            const reqSpecial = document.getElementById('reqSpecial');
+
+            updateRequirement(reqLength, requirements.length, '8+ characters');
+            updateRequirement(reqUppercase, requirements.uppercase, 'Uppercase letter (A-Z)');
+            updateRequirement(reqLowercase, requirements.lowercase, 'Lowercase letter (a-z)');
+            updateRequirement(reqNumber, requirements.number, 'Number (0-9)');
+            updateRequirement(reqSpecial, requirements.special, 'Special character (@$!%*?&)');
+
+            checkPasswordMatch();
+        }
+
+        function updateRequirement(element, met, text) {
+            element.innerText = text;
+            if (met) {
+                element.classList.remove('unmet');
+                element.classList.add('met');
+            } else {
+                element.classList.remove('met');
+                element.classList.add('unmet');
+            }
+        }
+
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const passwordMatchError = document.getElementById('passwordMatchError');
+
+            if (confirmPassword === '') {
+                passwordMatchError.classList.remove('show');
+                return;
+            }
+
+            if (password === confirmPassword) {
+                passwordMatchError.innerHTML = '✓ Passwords match';
+                passwordMatchError.classList.remove('validation-error');
+                passwordMatchError.classList.add('validation-success');
+                passwordMatchError.classList.add('show');
+            } else {
+                passwordMatchError.innerHTML = '✗ Passwords do not match';
+                passwordMatchError.classList.remove('validation-success');
+                passwordMatchError.classList.add('validation-error');
+                passwordMatchError.classList.add('show');
+            }
+        }
+
+        function togglePasswordVisibility(inputId, toggleId) {
+            const input = document.getElementById(inputId);
+            const toggle = document.getElementById(toggleId);
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggle.innerText = '👁️';
+            } else {
+                input.type = 'password';
+                toggle.innerText = '👁️‍🗨️';
+            }
+        }
+
+        function validatePhoneNumber(event) {
+            const input = event.target;
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+        function validateRegisterForm(event) {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+
+            let isValid = true;
+
+            if (!validateEmail(email)) {
+                emailError.innerText = "Please enter a valid email address";
+                emailError.classList.add('show');
+                isValid = false;
+            } else {
+                emailError.classList.remove('show');
+            }
+
+            const requirements = validatePasswordStrength(password);
+            const allMet = requirements.length && requirements.uppercase && requirements.lowercase && requirements.number && requirements.special;
+            if (!allMet) {
+                passwordError.innerText = "Password does not meet all requirements";
+                passwordError.classList.add('show');
+                isValid = false;
+            } else {
+                passwordError.classList.remove('show');
+            }
+
+            if (password !== confirmPassword) {
+                passwordError.innerText = "Passwords do not match";
+                passwordError.classList.add('show');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.querySelector('form');
+            if (registerForm) {
+                registerForm.addEventListener('submit', validateRegisterForm);
+            }
+
+            const emailInput = document.getElementById('email');
+            if (emailInput) {
+                emailInput.addEventListener('blur', function() {
+                    const emailError = document.getElementById('emailError');
+                    if (!validateEmail(this.value.trim())) {
+                        emailError.innerText = "Please enter a valid email address";
+                        emailError.classList.add('show');
+                    } else {
+                        emailError.classList.remove('show');
+                    }
+                });
+            }
+
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', validatePhoneNumber);
+            }
+
+            const passwordInput = document.getElementById('password');
+            if (passwordInput) {
+                passwordInput.addEventListener('input', updatePasswordRequirements);
+            }
+
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            if (confirmPasswordInput) {
+                confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+            }
+
+            const passwordToggle = document.getElementById('passwordToggle');
+            if (passwordToggle) {
+                passwordToggle.addEventListener('click', function() {
+                    togglePasswordVisibility('password', 'passwordToggle');
+                });
+            }
+
+            const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
+            if (confirmPasswordToggle) {
+                confirmPasswordToggle.addEventListener('click', function() {
+                    togglePasswordVisibility('confirmPassword', 'confirmPasswordToggle');
+                });
+            }
+        });
+    </script>
 </head>
 <body>
 <div class="register-container">
@@ -28,31 +217,45 @@
     <div class="error"><%= request.getAttribute("error") %></div>
     <% } %>
 
-    git pull origin main    <form action="<%= request.getContextPath() %>/register" method="post" enctype="multipart/form-data">
+    <form action="<%= request.getContextPath() %>/register" method="post">
         <div class="form-group">
             <label for="name">Full Name</label>
             <input type="text" id="name" name="name" required>
         </div>
         <div class="form-group">
             <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone">
+            <input type="tel" id="phone" name="phone" placeholder="Enter only numbers" inputmode="numeric">
         </div>
         <div class="form-group">
             <label for="email">Email Address</label>
             <input type="email" id="email" name="email" required>
+            <div id="emailError" class="validation-error"></div>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" required>
+                <span id="passwordToggle" class="password-toggle">👁️‍🗨️</span>
+            </div>
+            <div id="passwordError" class="validation-error"></div>
+            <div class="validation-info">
+                Password must contain:
+                <div id="reqLength" class="requirement unmet">✓ 8+ characters</div>
+                <div id="reqUppercase" class="requirement unmet">✓ Uppercase letter (A-Z)</div>
+                <div id="reqLowercase" class="requirement unmet">✓ Lowercase letter (a-z)</div>
+                <div id="reqNumber" class="requirement unmet">✓ Number (0-9)</div>
+                <div id="reqSpecial" class="requirement unmet">✓ Special character (@$!%*?&)</div>
+            </div>
         </div>
         <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <div class="password-wrapper">
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <span id="confirmPasswordToggle" class="password-toggle">👁️‍🗨️</span>
+            </div>
+            <div id="passwordMatchError" class="validation-error"></div>
         </div>
-        <div class="form-group">
-            <label for="profileImage">Profile Image</label>
-            <input type="file" id="profileImage" name="profileImage" accept="image/*">
-        </div>
+
         <button type="submit" class="btn">Register</button>
     </form>
 

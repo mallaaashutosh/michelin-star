@@ -52,7 +52,7 @@
             <p>Email: <%= user.getEmail() %><br>Phone: <%= user.getPhoneNumber() != null ? user.getPhoneNumber() : "—" %><br>Status: <%= user.getStatus() != null ? user.getStatus() : "active" %></p>
             <div class="actions">
                 <a href="<%= ctx %>/menu" class="btn">Browse Menu</a>
-                <a href="<%= ctx %>/index.jsp" class="btn btn-outline">Back to Home</a>
+                <a href="<%= ctx %>/" class="btn btn-outline">Back to Home</a>
             </div>
         </div>
     </div>

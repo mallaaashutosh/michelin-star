@@ -3,6 +3,7 @@ package com.restaurant.controller;
 import com.restaurant.dao.CustomerDAO;
 import com.restaurant.dao.CustomerDaoImpl;
 import com.restaurant.entity.User;
+import com.restaurant.utils.ValidationUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -31,6 +32,14 @@ public class LoginServlet extends HttpServlet {
 
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
             request.setAttribute("error", "Email and Password are required.");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            return;
+        }
+
+        // Validate email format
+        if (!ValidationUtil.isValidEmail(email)) {
+            request.setAttribute("error", "Please enter a valid email address.");
+            request.setAttribute("email", email);
             request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
         }
