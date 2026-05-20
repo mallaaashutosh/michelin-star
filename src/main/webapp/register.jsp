@@ -1,449 +1,684 @@
 <%--
     File: register.jsp
-    Purpose: New customer registration page for Michelin Star
-    Collects name, phone, email, and password, then POSTs to /register
-    Client-side validates email, password strength, and matching confirmation
+    Luxury Register Page for Michelin-Star Restaurant
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ page language="java"
+         contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <title>Register - Michelin Star</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Register | Michelin-Star</title>
+
+    <!-- GOOGLE FONTS -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
-        /* Center everything - signup form should be the focus */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 2rem 0;
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
         }
 
-        /* Clean white card for the form */
-        .register-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
+        body{
+
+            font-family:'Inter',sans-serif;
+
+            background:#f9f6f1;
+
+            min-height:100vh;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            padding:40px;
         }
 
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-top: 0;
+        /* ================= CONTAINER ================= */
+
+        .register-container{
+
+            width:100%;
+            max-width:550px;
+
+            background:white;
+
+            padding:60px 50px;
+
+            border-radius:35px;
+
+            box-shadow:0 20px 60px rgba(0,0,0,0.08);
         }
 
-        /* Spacing between form fields */
-        .form-group {
-            margin-bottom: 1rem;
+        /* ================= LOGO ================= */
+
+        .logo{
+
+            text-align:center;
+
+            font-size:46px;
+
+            font-family:'Cormorant Garamond',serif;
+
+            color:#7b5e45;
+
+            font-weight:700;
+
+            margin-bottom:10px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #666;
-            font-weight: 600;
+        /* ================= HEADING ================= */
+
+        .heading-section{
+
+            text-align:center;
+
+            margin-bottom:35px;
         }
 
-        /* Full width inputs with consistent padding */
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        input[type="tel"],
-        input[type="file"] {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
+        .heading-section h1{
+
+            font-size:50px;
+
+            font-family:'Cormorant Garamond',serif;
+
+            color:#2d2d2d;
+
+            margin-bottom:15px;
         }
 
-        /* Password field with show/hide toggle */
-        .password-wrapper {
-            position: relative;
-            width: 100%;
+        .heading-section p{
+
+            color:#777;
+
+            line-height:1.8;
+
+            font-size:15px;
         }
 
-        .password-toggle {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 18px;
-            user-select: none;
-            color: #666;
-            transition: color 0.3s;
+        /* ================= ERROR ================= */
+
+        .server-error{
+
+            background:#ffe5e5;
+
+            color:#d9534f;
+
+            padding:14px;
+
+            border-radius:12px;
+
+            margin-bottom:20px;
+
+            text-align:center;
         }
 
-        .password-toggle:hover {
-            color: #333;
+        /* ================= FORM ================= */
+
+        .form-group{
+            margin-bottom:22px;
         }
 
-        /* Make room for the eye icon */
-        .password-wrapper input[type="password"],
-        #password,
-        #confirmPassword {
-            padding-right: 40px;
+        label{
+
+            display:block;
+
+            margin-bottom:10px;
+
+            color:#444;
+
+            font-weight:500;
         }
 
-        /* Primary submit button - green means go */
-        .btn {
-            width: 100%;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 4px;
-            background: #28a745;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 1rem;
+        input{
+
+            width:100%;
+
+            padding:16px 18px;
+
+            border:none;
+
+            background:#f5f2ec;
+
+            border-radius:15px;
+
+            font-size:15px;
+
+            outline:none;
+
+            transition:0.3s;
         }
 
-        .btn:hover {
-            background: #218838;
+        input:focus{
+
+            border:1px solid #b58b65;
+
+            background:white;
         }
 
-        /* Error and success message styles */
-        .error {
-            color: #d9534f;
-            background: #f2dede;
-            padding: 0.5rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            text-align: center;
+        /* ================= PASSWORD ================= */
+
+        .password-wrapper{
+            position:relative;
         }
 
-        .footer {
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: #777;
+        .toggle-password{
+
+            position:absolute;
+
+            right:18px;
+
+            top:50%;
+
+            transform:translateY(-50%);
+
+            cursor:pointer;
+
+            color:#777;
+
+            font-size:18px;
         }
 
-        .footer a {
-            color: #007bff;
-            text-decoration: none;
+        /* ================= VALIDATION ================= */
+
+        .validation-message{
+
+            font-size:13px;
+
+            margin-top:8px;
+
+            display:none;
         }
 
-        /* Validation feedback messages */
-        .validation-error {
-            color: #d9534f;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
+        .error{
+            color:#d9534f;
         }
 
-        .validation-error.show {
-            display: block;
+        .success{
+            color:#28a745;
         }
 
-        .validation-success {
-            color: #28a745;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
+        /* ================= PASSWORD RULES ================= */
+
+        .password-rules{
+
+            margin-top:12px;
+
+            font-size:13px;
+
+            color:#666;
+
+            line-height:1.8;
         }
 
-        .validation-success.show {
-            display: block;
+        .rule.valid{
+            color:#28a745;
         }
 
-        /* Password requirements checklist */
-        .validation-info {
-            color: #666;
-            font-size: 12px;
-            margin-top: 5px;
-            line-height: 1.4;
+        .rule.invalid{
+            color:#d9534f;
         }
 
-        .requirement {
-            margin: 3px 0;
+        /* ================= BUTTON ================= */
+
+        .register-btn{
+
+            width:100%;
+
+            padding:16px;
+
+            border:none;
+
+            background:#b58b65;
+
+            color:white;
+
+            font-size:16px;
+
+            font-weight:600;
+
+            border-radius:50px;
+
+            cursor:pointer;
+
+            transition:0.3s;
+
+            margin-top:10px;
         }
 
-        .requirement.met {
-            color: #28a745;
+        .register-btn:hover{
+
+            background:#8c6c4d;
+
+            transform:translateY(-3px);
         }
 
-        .requirement.unmet {
-            color: #d9534f;
+        /* ================= FOOTER ================= */
+
+        .footer{
+
+            text-align:center;
+
+            margin-top:30px;
+
+            color:#777;
         }
+
+        .footer a{
+
+            color:#b58b65;
+
+            text-decoration:none;
+
+            font-weight:600;
+        }
+
+        .footer a:hover{
+            text-decoration:underline;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width:600px){
+
+            .register-container{
+                padding:45px 30px;
+            }
+
+            .heading-section h1{
+                font-size:38px;
+            }
+
+            .logo{
+                font-size:38px;
+            }
+        }
+
     </style>
 
-    <script>
-        // Basic email format check - prevents obvious typos
-        function validateEmail(email) {
-            const emailPattern = /^[A-Za-z0-9+_.-]+@(.+)$/;
-            return emailPattern.test(email);
-        }
-
-        // Check password against all our security rules
-        function validatePasswordStrength(password) {
-            const requirements = {
-                length: password.length >= 8,           // Minimum 8 characters
-                uppercase: /[A-Z]/.test(password),      // At least one capital letter
-                lowercase: /[a-z]/.test(password),      // At least one lowercase
-                number: /\d/.test(password),            // At least one number
-                special: /[@$!%*?&]/.test(password)     // At least one special character
-            };
-            return requirements;
-        }
-
-        // Update the password rules checklist as user types - instant feedback
-        function updatePasswordRequirements() {
-            const password = document.getElementById('password').value;
-            const requirements = validatePasswordStrength(password);
-
-            // Update each requirement indicator
-            const reqLength = document.getElementById('reqLength');
-            const reqUppercase = document.getElementById('reqUppercase');
-            const reqLowercase = document.getElementById('reqLowercase');
-            const reqNumber = document.getElementById('reqNumber');
-            const reqSpecial = document.getElementById('reqSpecial');
-
-            updateRequirement(reqLength, requirements.length, '8+ characters');
-            updateRequirement(reqUppercase, requirements.uppercase, 'Uppercase letter (A-Z)');
-            updateRequirement(reqLowercase, requirements.lowercase, 'Lowercase letter (a-z)');
-            updateRequirement(reqNumber, requirements.number, 'Number (0-9)');
-            updateRequirement(reqSpecial, requirements.special, 'Special character (@$!%*?&)');
-
-            checkPasswordMatch(); // Also update the confirm password message
-        }
-
-        // Helper to style each requirement line
-        function updateRequirement(element, met, text) {
-            element.innerText = text;
-            if (met) {
-                element.classList.remove('unmet');
-                element.classList.add('met');
-            } else {
-                element.classList.remove('met');
-                element.classList.add('unmet');
-            }
-        }
-
-        // Make sure password and confirm password match
-        function checkPasswordMatch() {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const passwordMatchError = document.getElementById('passwordMatchError');
-
-            // Don't show match UI until user starts typing confirmation
-            if (confirmPassword === '') {
-                passwordMatchError.classList.remove('show');
-                return;
-            }
-
-            if (password === confirmPassword) {
-                passwordMatchError.innerHTML = '✓ Passwords match';
-                passwordMatchError.classList.remove('validation-error');
-                passwordMatchError.classList.add('validation-success');
-                passwordMatchError.classList.add('show');
-            } else {
-                passwordMatchError.innerHTML = '✗ Passwords do not match';
-                passwordMatchError.classList.remove('validation-success');
-                passwordMatchError.classList.add('validation-error');
-                passwordMatchError.classList.add('show');
-            }
-        }
-
-        // Toggle password field between visible and hidden
-        function togglePasswordVisibility(inputId, toggleId) {
-            const input = document.getElementById(inputId);
-            const toggle = document.getElementById(toggleId);
-
-            if (input.type === 'password') {
-                input.type = 'text';
-                toggle.innerText = '👁️';      // Open eye icon
-            } else {
-                input.type = 'password';
-                toggle.innerText = '👁️‍🗨️';    // Closed/slashed eye icon
-            }
-        }
-
-        // Phone numbers should only contain digits - strip everything else
-        function validatePhoneNumber(event) {
-            const input = event.target;
-            input.value = input.value.replace(/[^0-9]/g, '');
-        }
-
-        // Final validation before submitting - blocks submission if anything's wrong
-        function validateRegisterForm(event) {
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const emailError = document.getElementById('emailError');
-            const passwordError = document.getElementById('passwordError');
-
-            let isValid = true;
-
-            // Check email format
-            if (!validateEmail(email)) {
-                emailError.innerText = "Please enter a valid email address";
-                emailError.classList.add('show');
-                isValid = false;
-            } else {
-                emailError.classList.remove('show');
-            }
-
-            // Check password meets all requirements
-            const requirements = validatePasswordStrength(password);
-            const allMet = requirements.length && requirements.uppercase &&
-                requirements.lowercase && requirements.number && requirements.special;
-            if (!allMet) {
-                passwordError.innerText = "Password does not meet all requirements";
-                passwordError.classList.add('show');
-                isValid = false;
-            } else {
-                passwordError.classList.remove('show');
-            }
-
-            // Check passwords match each other
-            if (password !== confirmPassword) {
-                passwordError.innerText = "Passwords do not match";
-                passwordError.classList.add('show');
-                isValid = false;
-            }
-
-            if (!isValid) {
-                event.preventDefault(); // Stop the form from submitting
-            }
-        }
-
-        // Set up all event listeners once the page is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            // Form submission validation
-            const registerForm = document.querySelector('form');
-            if (registerForm) {
-                registerForm.addEventListener('submit', validateRegisterForm);
-            }
-
-            // Validate email when user leaves the field (blur)
-            const emailInput = document.getElementById('email');
-            if (emailInput) {
-                emailInput.addEventListener('blur', function() {
-                    const emailError = document.getElementById('emailError');
-                    if (!validateEmail(this.value.trim())) {
-                        emailError.innerText = "Please enter a valid email address";
-                        emailError.classList.add('show');
-                    } else {
-                        emailError.classList.remove('show');
-                    }
-                });
-            }
-
-            // Phone number - numbers only
-            const phoneInput = document.getElementById('phone');
-            if (phoneInput) {
-                phoneInput.addEventListener('input', validatePhoneNumber);
-            }
-
-            // Live password strength checking
-            const passwordInput = document.getElementById('password');
-            if (passwordInput) {
-                passwordInput.addEventListener('input', updatePasswordRequirements);
-            }
-
-            // Live confirm password checking
-            const confirmPasswordInput = document.getElementById('confirmPassword');
-            if (confirmPasswordInput) {
-                confirmPasswordInput.addEventListener('input', checkPasswordMatch);
-            }
-
-            // Password show/hide toggles
-            const passwordToggle = document.getElementById('passwordToggle');
-            if (passwordToggle) {
-                passwordToggle.addEventListener('click', function() {
-                    togglePasswordVisibility('password', 'passwordToggle');
-                });
-            }
-
-            const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
-            if (confirmPasswordToggle) {
-                confirmPasswordToggle.addEventListener('click', function() {
-                    togglePasswordVisibility('confirmPassword', 'confirmPasswordToggle');
-                });
-            }
-        });
-    </script>
 </head>
+
 <body>
 
 <div class="register-container">
-    <h2>Create Account</h2>
 
-    <!-- Display any server-side errors (duplicate email, validation failures, etc.) -->
-    <% if (request.getAttribute("error") != null) { %>
-    <div class="error"><%= request.getAttribute("error") %></div>
+    <!-- ================= LOGO ================= -->
+
+    <div class="logo">
+        Michelin-Star
+    </div>
+
+    <!-- ================= HEADING ================= -->
+
+    <div class="heading-section">
+
+        <h1>
+            Create Your Account
+        </h1>
+
+        <p>
+            Join Michelin-Star and enjoy luxury dining,
+            premium reservations, and unforgettable experiences.
+        </p>
+
+    </div>
+
+    <!-- ================= SERVER ERROR ================= -->
+
+    <% if(request.getAttribute("error") != null){ %>
+
+    <div class="server-error">
+        <%= request.getAttribute("error") %>
+    </div>
+
     <% } %>
 
-    <form action="<%= request.getContextPath() %>/register" method="post">
+    <!-- ================= FORM ================= -->
 
-        <!-- Full name - required -->
+    <form action="<%= request.getContextPath() %>/register"
+          method="post"
+          onsubmit="return validateForm()">
+
+        <!-- FULL NAME -->
+
         <div class="form-group">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" required>
+
+            <label>Full Name</label>
+
+            <input type="text"
+                   name="name"
+                   placeholder="Enter your full name"
+                   required>
+
         </div>
 
-        <!-- Phone number - optional but nice to have for reservations -->
+        <!-- PHONE -->
+
         <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="Enter only numbers" inputmode="numeric">
+
+            <label>Phone Number</label>
+
+            <input type="tel"
+                   id="phone"
+                   name="phone"
+                   placeholder="Enter phone number"
+                   required>
+
         </div>
 
-        <!-- Email address - used for login -->
+        <!-- EMAIL -->
+
         <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required>
-            <div id="emailError" class="validation-error"></div>
+
+            <label>Email Address</label>
+
+            <input type="email"
+                   id="email"
+                   name="email"
+                   placeholder="Enter your email"
+                   required>
+
+            <div id="emailError"
+                 class="validation-message error">
+            </div>
+
         </div>
 
-        <!-- Password with strength meter -->
+        <!-- PASSWORD -->
+
         <div class="form-group">
-            <label for="password">Password</label>
+
+            <label>Password</label>
+
             <div class="password-wrapper">
-                <input type="password" id="password" name="password" required>
-                <span id="passwordToggle" class="password-toggle">👁️‍🗨️</span>
-            </div>
-            <div id="passwordError" class="validation-error"></div>
 
-            <!-- Live password requirements checklist -->
-            <div class="validation-info">
-                Password must contain:
-                <div id="reqLength" class="requirement unmet">✓ 8+ characters</div>
-                <div id="reqUppercase" class="requirement unmet">✓ Uppercase letter (A-Z)</div>
-                <div id="reqLowercase" class="requirement unmet">✓ Lowercase letter (a-z)</div>
-                <div id="reqNumber" class="requirement unmet">✓ Number (0-9)</div>
-                <div id="reqSpecial" class="requirement unmet">✓ Special character (@$!%*?&)</div>
+                <input type="password"
+                       id="password"
+                       name="password"
+                       placeholder="Create password"
+                       required>
+
+                <span class="toggle-password"
+                      onclick="togglePassword('password')">
+
+                    <i class="fa-solid fa-eye"></i>
+
+                </span>
+
             </div>
+
+            <!-- PASSWORD RULES -->
+
+            <div class="password-rules">
+
+                <div id="lengthRule"
+                     class="rule invalid">
+
+                    ✓ Minimum 8 characters
+
+                </div>
+
+                <div id="upperRule"
+                     class="rule invalid">
+
+                    ✓ One uppercase letter
+
+                </div>
+
+                <div id="numberRule"
+                     class="rule invalid">
+
+                    ✓ One number
+
+                </div>
+
+                <div id="specialRule"
+                     class="rule invalid">
+
+                    ✓ One special character
+
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- Confirm password - catches typos -->
+        <!-- CONFIRM PASSWORD -->
+
         <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
+
+            <label>Confirm Password</label>
+
             <div class="password-wrapper">
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
-                <span id="confirmPasswordToggle" class="password-toggle">👁️‍🗨️</span>
+
+                <input type="password"
+                       id="confirmPassword"
+                       name="confirmPassword"
+                       placeholder="Confirm password"
+                       required>
+
+                <span class="toggle-password"
+                      onclick="togglePassword('confirmPassword')">
+
+                    <i class="fa-solid fa-eye"></i>
+
+                </span>
+
             </div>
-            <div id="passwordMatchError" class="validation-error"></div>
+
+            <div id="passwordMatch"
+                 class="validation-message">
+            </div>
+
         </div>
 
-        <button type="submit" class="btn">Register</button>
+        <!-- BUTTON -->
+
+        <button type="submit"
+                class="register-btn">
+
+            Register
+
+        </button>
+
     </form>
 
-    <!-- Link back to login for existing users -->
+    <!-- ================= FOOTER ================= -->
+
     <div class="footer">
-        Already have an account? <a href="${pageContext.request.contextPath}/login">Login here</a>
+
+        Already have an account?
+
+        <a href="<%= request.getContextPath() %>/login.jsp">
+
+            Login Here
+
+        </a>
+
     </div>
+
 </div>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    // SHOW / HIDE PASSWORD
+
+    function togglePassword(id){
+
+        let input =
+            document.getElementById(id);
+
+        if(input.type === "password"){
+
+            input.type = "text";
+
+        }else{
+
+            input.type = "password";
+        }
+    }
+
+    // PASSWORD RULES
+
+    document.getElementById("password")
+        .addEventListener("input", function(){
+
+            let password = this.value;
+
+            validateRule(
+                "lengthRule",
+                password.length >= 8
+            );
+
+            validateRule(
+                "upperRule",
+                /[A-Z]/.test(password)
+            );
+
+            validateRule(
+                "numberRule",
+                /[0-9]/.test(password)
+            );
+
+            validateRule(
+                "specialRule",
+                /[!@#$%^&*]/.test(password)
+            );
+
+        });
+
+    function validateRule(id, valid){
+
+        let element =
+            document.getElementById(id);
+
+        if(valid){
+
+            element.classList.remove("invalid");
+            element.classList.add("valid");
+
+        }else{
+
+            element.classList.remove("valid");
+            element.classList.add("invalid");
+        }
+    }
+
+    // PASSWORD MATCH CHECK
+
+    document.getElementById("confirmPassword")
+        .addEventListener("keyup", function(){
+
+            let password =
+                document.getElementById("password").value;
+
+            let confirmPassword =
+                this.value;
+
+            let message =
+                document.getElementById("passwordMatch");
+
+            if(confirmPassword === ""){
+
+                message.style.display = "none";
+
+                return;
+            }
+
+            message.style.display = "block";
+
+            if(password === confirmPassword){
+
+                message.innerHTML =
+                    "✓ Passwords match";
+
+                message.className =
+                    "validation-message success";
+
+            }else{
+
+                message.innerHTML =
+                    "✗ Passwords do not match";
+
+                message.className =
+                    "validation-message error";
+            }
+        });
+
+    // EMAIL VALIDATION
+
+    function validateEmail(email){
+
+        let pattern =
+            /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+        return pattern.test(email);
+    }
+
+    // FORM VALIDATION
+
+    function validateForm(){
+
+        let email =
+            document.getElementById("email").value;
+
+        let password =
+            document.getElementById("password").value;
+
+        let confirmPassword =
+            document.getElementById("confirmPassword").value;
+
+        let emailError =
+            document.getElementById("emailError");
+
+        emailError.style.display = "none";
+
+        // EMAIL CHECK
+
+        if(!validateEmail(email)){
+
+            emailError.innerHTML =
+                "Enter valid email address";
+
+            emailError.style.display =
+                "block";
+
+            return false;
+        }
+
+        // PASSWORD MATCH CHECK
+
+        if(password !== confirmPassword){
+
+            alert("Passwords do not match");
+
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
 
 </body>
 </html>
